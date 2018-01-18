@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:30:05 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/01/18 22:22:24 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/01/18 22:55:34 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,19 +15,20 @@
 
 static	void	crypt_base64(char *line, size_t slen, size_t i, char res)
 {
-	size_t	remidner;
+	size_t	re;
 	char	rem;
 	char	*fin;
 //	char	st[26 + 26 + 10 + 2 + 1];
 	char	st[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 //	st = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
-	remidner = ((slen % 3) == 1 ? slen + 1 : slen + 2);
-	slen = (remidner ? (slen + remidner) : slen) / 3 * 4 + 1;
+	if ((re = slen % 3))
+		re = ((slen % 3) == 1 ? slen + 2 : slen + 1);
+	slen = (re ? re : slen) / 3 * 4 + 1;
 	fin = (char *)malloc(sizeof(char) * slen);
 	fin[slen - 1] = '\0';
-	printf("%zu | %zu | %zu\n", i, slen, remidner);
-	while (i < (slen - remidner))
+	printf("%zu | %zu | %zu\n", i, slen, re);
+	while (i < re)
 	{
 		res = line[i] >> 2;
 		fin[i] = st[res];
@@ -39,11 +40,12 @@ static	void	crypt_base64(char *line, size_t slen, size_t i, char res)
 		fin[i] = st[res | rem];
 		rem = line[i++] << 6;
 		fin[i] = st[rem];
+		printf("%s | %zu\n", fin, i);
 	}
-	while (i < slen)
-		fin[i++] = '=';
+	while (++i < slen)
+		fin[i] = '=';
 	// printf("%s\n", fin);
-	ft_printf("%s\n", fin);
+	// ft_printf("%s\n", fin);
 	free(fin);
 }
 
@@ -97,7 +99,6 @@ int		main(int ac, char **av)
 	}
 	if (get_next_line(fd, &line) == -1)
 		return (-1);
-	printf("%s\n%d | %d\n", line, b64->crypt, b64->decrypt);
 	b64->crypt ? crypt_base64(line, ft_strlen(line), 0, 0) : 0;//encrypt_base64(line);
 	free(b64);
 	close(fd);
