@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:47:17 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/01/19 21:33:24 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/01/24 18:57:39 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,12 @@
 # include <sys/uio.h>
 # include <fcntl.h>
 # include "ft_printf/libft/libft.h"
-# define BUFF_SIZE 64
 
 typedef	struct		s_fl
 {
 	unsigned int	decrypt : 1;
 	unsigned int	encrypt : 1;
 	unsigned int	base64 : 1;
-	int				bufsize;
 	char			*in;
 	char			*out;
 }					t_fl;

@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 00:39:08 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/01/19 21:38:48 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/01/24 19:22:08 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ static	void	fill_zeros(t_fl *fl)
 	fl->encrypt = 0;
 	fl->decrypt = 0;
 	fl->base64 = 0;
-	fl->bufsize = 0;
 	fl->in = 0;
 	fl->out = 0;
 }
@@ -40,20 +39,16 @@ static	int		read_args(char **av, t_fl *fl, unsigned int i)
 {
 	while (av[++i])
 	{
-		if (!(ft_strcmp(av[i], "-in")) && av[i + 1] && (++i))
-			fl->in = av[i++];
-		else if (!(ft_strcmp(av[i], "-out")) && av[i + 1] && (++i))
-			fl->out = av[i++];
-		else if (!(ft_strcmp(av[i], "-i")) && av[i + 1] && (++i))
-			fl->in = av[i++];
-		else if (!(ft_strcmp(av[i], "-o")) && av[i + 1] && (++i))
-			fl->out = av[i++];
+		if ((!(ft_strcmp(av[i], "-in")) || !(ft_strcmp(av[i], "-i")))\
+		&& av[i + 1])
+			fl->in = av[++i];
+		else if ((!(ft_strcmp(av[i], "-out")) || !(ft_strcmp(av[i], "-o")))\
+		&& av[i + 1])
+			fl->out = av[++i];
 		else if (!(ft_strcmp(av[i], "-e")))
 			fl->encrypt = 1;
 		else if (!(ft_strcmp(av[i], "-d")))
 			fl->decrypt = 1;
-		else if (!(ft_strcmp(av[i], "-bufsize")) && av[i + 1] && (++i))
-			fl->bufsize = ft_atoi(av[i++]);
 		else
 			return (error(-1, av, fl, i));
 	}
