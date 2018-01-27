@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:30:05 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/01/24 21:46:51 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/01/27 14:34:43 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,29 +26,29 @@ static	char	*encrypt_base64(char *line, size_t slen, size_t i, size_t j)
 	char			*fin;
 
 	// printf("%c\n", st[60]);
-	printf("slen1 = %zu\n", slen);
-	slen = (((slen % 3) && (slen % 3) == 2) ? slen + 1 : slen + 2) / 3 * 4 + 1;
+	// printf("slen1 = %zu\n", slen);
+	slen = (((slen % 3) && (slen % 3) == 2) ? (slen + 1) : (slen + 2)) / 3 * 4 + 1;
 	fin = (char *)malloc(sizeof(char) * slen);
 	fin[--slen] = '\0';
-	printf("slen2 = %zu\n", slen);
+	// printf("slen2 = %zu\n", slen);
 	while (i < slen)
 	{
 		res = (line[j] ? (line[j] >> 2) : 65);
 		fin[i++] = st[res];
-		printf("%c | %d\n", fin[i - 1], res);
+		// printf("%c | %d\n", fin[i - 1], res);
 		rem = (line[j] ? (line[j++] << 6) : 65);
-		res = (line[j] ? (line[j] >> 4) : 65);
-		fin[i++] = st[res | rem];
-		printf("%c | %d\n", fin[i - 1], res | rem);
-		rem = (line[j] ? ((line[j++] << 4) >> 2) : 65);
-		res = (line[j] ? (line[j] >> 6) : 65);
-		fin[i++] = st[res | rem];
-		printf("%c | %d\n", fin[i - 1], res | rem);
-		rem = (line[j] ? ((line[j++] << 2) >> 2) : 65);
-		fin[i++] = st[rem];
-		printf("%c | %d\n", fin[i - 1], rem);
+		res = (line[j] ? ((line[j] >> 4) << 2) : 65);
+		fin[i++] = st[(res | rem) >> 2];
+		// printf("%c | %d\n", fin[i - 1], (res | rem) >> 2);
+		rem = (line[j] ? (line[j++] << 4) : 65);
+		res = (line[j] ? ((line[j] >> 6) << 2): 65);
+		fin[i++] = (line[j] ? (st[((res | rem) >> 2)]) : '=');
+		// printf("%c | %d\n", fin[i - 1], (res | rem) >> 2);
+		rem = (line[j] ? (line[j++] << 2) : 65);
+		fin[i++] = (line[j] ? (st[rem >> 2]) : '=');
+		// printf("%c | %d\n", fin[i - 1], rem >> 2);
 	}
-	printf("%s | %zu | %zu\n", fin, i, j);
+	// printf("%s | %zu | %zu\n", fin, i, j);
 	return (fin);
 }
 
@@ -69,9 +69,9 @@ int				put_base64(char **av, t_fl *fl)
 			return (error(1, av, fl, 0));
 		buf[ret] = '\0';
 		r = (fl->decrypt ? decrypt_base64() : encrypt_base64(buf, ret , 0, 0));
-		// if ((write(k[1], r, ft_strlen(r)) == -1) ||\
-		// (write(k[1], "\n", 1) == -1))
-		// 	return (error(1, av, fl, 0));
+		if ((write(k[1], r, ft_strlen(r)) == -1) ||\
+		(write(k[1], "\n", 1) == -1))
+			return (error(1, av, fl, 0));
 		free(r);
 	}
 	free(buf);
