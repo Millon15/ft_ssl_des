@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 00:39:08 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/01/29 18:19:18 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/01/29 21:49:43 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static	int		read_command(char **av, t_fl *fl)
 		return ((fl->base64 = 1));
 	return (-1);
 }
+
 static	int		put_enc(char **av, t_fl *fl)
 {
 	if (fl->base64)

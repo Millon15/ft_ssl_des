@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:30:05 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/01/29 21:37:43 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/01/29 21:52:39 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ static	unsigned int	find_num(char a)
 	return (i);
 }
 
-static	char	*decrypt_base64(char *line, size_t ln, size_t i, size_t j)
+static	char			*decrypt_base64(char *line, size_t ln,\
+size_t i, size_t j)
 {
 	unsigned char	res;
 	unsigned char	rem;
@@ -55,12 +56,13 @@ static	char	*decrypt_base64(char *line, size_t ln, size_t i, size_t j)
 	return (fin);
 }
 
-static	char	*encrypt_base64(char *line, size_t ln, size_t i, size_t j)
+static	char			*encrypt_base64(char *line, size_t ln,\
+size_t i, size_t j)
 {
-	const	char	st[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-	"abcdefghijklmnopqrstuvwxyz0123456789+/";
 	unsigned char	res;
 	unsigned char	rem;
+	const	char	st[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	"abcdefghijklmnopqrstuvwxyz0123456789+/";
 	char			*fin;
 
 	ln = ((((ln % 3) && (ln % 3) == 2) ? (ln + 1) : (ln + 2)) / 3 * 4);
@@ -84,7 +86,7 @@ static	char	*encrypt_base64(char *line, size_t ln, size_t i, size_t j)
 	return (fin);
 }
 
-int				put_base64(char **av, t_fl *fl)
+int						put_base64(char **av, t_fl *fl)
 {
 	ssize_t		ret;
 	char		*r[3];
