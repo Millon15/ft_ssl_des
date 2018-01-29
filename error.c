@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 20:09:45 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/01/19 20:11:22 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/01/29 19:43:18 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ Message Digest commands:\n\nCipher commands:\nbase64\n");
 	{
 		ft_putstr("unknown option '");
 		ft_putstr(av[i]);
-		ft_putstr("options are\n-in <file>\tinput file\n\
+		ft_putstr("' options are\n-in <file>\tinput file\n\
 -out <file>\toutput file\n-e\t\tencrypt\n-d\t\tdecrypt\n\
 Cipher Types\ndes\t\tdes-ecb\t\tdes-cbc\n");
 	}

@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 00:39:08 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/01/27 17:05:51 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/01/29 18:19:18 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ int				main(int ac, char **av)
 		return (error(ac, av, fl, 0));
 	if (read_args(av, fl, 1) == -1 || put_enc(av, fl) == -1)
 		return (-1);
-	// printf("%-10p %-10u %-10u %-10u\n", fl, fl->encrypt, fl->decrypt, fl->base64);
 	free(fl);
 	return (0);
 }

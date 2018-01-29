@@ -6,21 +6,59 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:30:05 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/01/27 17:05:58 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/01/29 21:37:43 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_ssl.h"
 
-static	char	*decrypt_base64(void)
+static	unsigned int	find_num(char a)
 {
-	return (NULL);
+	const	char	st[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	"abcdefghijklmnopqrstuvwxyz0123456789+/";
+	unsigned int		i;
+
+	i = 0;
+	if (a == '=')
+		return (0);
+	while (a != st[i])
+		i++;
+	return (i);
+}
+
+static	char	*decrypt_base64(char *line, size_t ln, size_t i, size_t j)
+{
+	unsigned char	res;
+	unsigned char	rem;
+	char			*fin;
+
+	while (line[i])
+		if (line[i++] == '\n')
+			j++;
+	ln = !((ln - j) % 4) ? ((i - j) / 4 * 3) : 0;
+	fin = (char *)malloc(sizeof(char) * (ln + 1));
+	i = 0;
+	j = 0;
+	while (j < ln)
+	{
+		res = find_num(line[i++]);
+		rem = find_num(line[i++]);
+		fin[j++] = (res << 2) | (rem >> 4);
+		res = find_num(line[i++]);
+		fin[j++] = (rem << 4) | (res >> 2);
+		rem = find_num(line[i++]);
+		fin[j++] = (res << 6) | rem;
+		if (!(i % 64))
+			i++;
+	}
+	fin[j] = '\0';
+	return (fin);
 }
 
 static	char	*encrypt_base64(char *line, size_t ln, size_t i, size_t j)
 {
-	const	char	st[] =\
-	"ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
+	const	char	st[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+	"abcdefghijklmnopqrstuvwxyz0123456789+/";
 	unsigned char	res;
 	unsigned char	rem;
 	char			*fin;
@@ -49,27 +87,26 @@ static	char	*encrypt_base64(char *line, size_t ln, size_t i, size_t j)
 int				put_base64(char **av, t_fl *fl)
 {
 	ssize_t		ret;
-	char		*buf;
-	char		*r;
-	int			k[2];
-	int			bfs;
+	char		*r[3];
+	int			k[3];
 
-	bfs = (fl->bufs ? fl->bufs : BUFF_SIZE);
 	if ((k[0] = fl->in ? open(fl->in, O_RDONLY) : 0) == -1 ||\
 	(k[1] = fl->out ? open(fl->out, O_WRONLY) : 1) == -1)
 		return (error(1, av, fl, 0));
-	buf = (char *)malloc(sizeof(char) * (bfs + 1));
-	while ((ret = read(k[0], buf, bfs)))
+	k[2] = (fl->bufs ? fl->bufs : BUFF_SIZE);
+	r[0] = (char *)malloc(sizeof(char) * (k[2] + 1));
+	r[1] = (char *)ft_memalloc(sizeof(char) * 1);
+	while ((ret = read(k[0], r[0], k[2])))
 	{
-		if (ret == -1)
-			return (error(1, av, fl, 0));
-		buf[ret] = '\0';
-		r = (fl->decrypt ? decrypt_base64() : encrypt_base64(buf, ret , 0, 0));
-		if ((write(k[1], r, ft_strlen(r))) == -1)
-			return (error(1, av, fl, 0));
-		free(r);
+		r[0][ret] = '\0';
+		r[2] = r[1];
+		r[1] = ft_strjoin(r[1], r[0]);
+		free(r[2]);
 	}
-	write(1, "\n", 1);
-	free(buf);
+	r[1] = (fl->decrypt ? decrypt_base64(r[1], ft_strlen(r[1]), 0, 0) :\
+		encrypt_base64(r[1], ft_strlen(r[1]), 0, 0));
+	fl->decrypt ? ft_putstr_fd(r[1], k[1]) : ft_putendl_fd(r[1], k[1]);
+	free(r[1]);
+	free(r[0]);
 	return (0);
 }
