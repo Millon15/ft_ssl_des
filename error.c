@@ -6,36 +6,56 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 20:09:45 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/01/29 21:47:15 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/01/30 21:33:55 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_ssl.h"
 
-int		error(int ac, char **av, t_fl *fl, unsigned int i)
+static	void	help(int ac, char **av, char *str, int i)
 {
-	if (ac == 1)
-		ft_putendl("usage: ft_ssl command [command opts] [command args]");
-	else if (ac >= 2)
+	if (ac > 2)
+	{
+		if (!str)
+		{
+			ft_putstr("unknown option '");
+			ft_putstr(av[i]);
+			ft_putstr("'\n");
+		}
+		else
+		{
+			ft_putstr("missing file argument for ");
+			ft_putendl(av[i]);
+		}
+		ft_putstr("usage: ft_ssl command [command opts] [command args]\n\n"
+		"Valid command opts values:\n\n"
+		"-in or -i <file>\tInput file to read from (default stdin)\n"
+		"-out or -o <file>\tOutput file to write to (default stdout)\n"
+		"-bufsize <size>\t\tSpecify the buffer size to use for I/O\n"
+		"-e\t\t\tEncrypt the input data\n"
+		"-d\t\t\tDencrypt the input data\n");
+	}
+}
+
+int				error(int ac, char **av, char *str, int i)
+{
+	if (ac == -1)
+	{
+		if (str)
+			ft_putstr(str);
+		ft_putstr(": No such file or directory\n");
+	}
+	else if (ac == 1)
+		ft_putstr("usage: ft_ssl command [command opts] [command args]\n");
+	else if (ac == 2)
 	{
 		ft_putstr("ft_ssl: Error: '");
-		ft_putstr(av[1]);
-		ft_putstr("' is an invalid command.\nStandard commands:\n\n"
+		ft_putstr(av[i]);
+		ft_putstr("' is an invalid command.\n\nStandard commands:\n\n"
 		"Message Digest commands:\n\nCipher commands:\nbase64\n"
 		"des\ndes-ecb\ndes-cbc\n");
 	}
-	else if (ac == -1)
-	{
-		ft_putstr("unknown option '");
-		ft_putstr(av[i]);
-		ft_putstr("' options are\n-in <file>\tinput file\n"
-		"-out <file>\toutput file\n-e\t\tencrypt\n-d\t\tdecrypt\n"
-		"Cipher Types\ndes\t\tdes-ecb\t\tdes-cbc\n");
-	}
-	else if (ac == -2)
-		ft_putstr("options are\n-in <file>\tinput file\n"
-		"-out <file>\toutput file\n-e\t\tencrypt\n-d\t\tdecrypt\n"
-		"Cipher Types\ndes\t\tdes-ecb\t\tdes-cbc\n");
-	free(fl);
+	else
+		help(ac, av, str, i);
 	return (-1);
 }

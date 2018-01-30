@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 20:15:12 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/01/16 14:53:57 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/01/30 18:33:01 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,5 +94,7 @@ char				*ft_itoa_base(int value, int base);
 unsigned long int	ft_pow(int n, int pw);
 int					ft_root(int n, int rt);
 int					ft_fcd(int a, int b);
+int					ft_isprint(int c);
+int					ft_iswhitespace(int c);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:47:17 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/01/27 15:36:28 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/01/30 20:38:13 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ typedef	struct		s_fl
 
 int					ft_printf(const char *s, ...);
 
-int					error(int ac, char **av, t_fl *fl, unsigned int i);
-int					put_base64(char **av, t_fl *fl);
+int					error(int ac, char **av, char *str, int i);
+int					put_base64(char **av, t_fl *fl, ssize_t ret);
 
 #endif
