@@ -6,11 +6,26 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/01 15:44:43 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/01 16:39:12 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_ssl.h"
+#include "permutations.h"
+
+static	char			*decrypt_des_ecb(char *line, size_t ln,
+size_t i, size_t j)
+{
+	return (NULL);
+}
+
+static	char			*encrypt_des_ecb(char *line, size_t ln,\
+size_t i, size_t j)
+{
+
+
+	return (NULL);
+}
 
 int						put_des_ecb(char **av, t_fl *fl, ssize_t ret)
 {
@@ -31,8 +46,8 @@ int						put_des_ecb(char **av, t_fl *fl, ssize_t ret)
 		r[1] = ft_strjoin(r[1], r[0]);
 		free(r[2]);
 	}
-	r[1] = (fl->decrypt ? decrypt_base64(r[1], ft_strlen(r[1]), 0, 0) :\
-		encrypt_base64(r[1], ft_strlen(r[1]), 0, 0));
+	r[1] = (fl->decrypt ? decrypt_des_ecb(r[1], ft_strlen(r[1]), 0, 0) :\
+		encrypt_des_ecb(r[1], ft_strlen(r[1]), 0, 0));
 	fl->decrypt ? ft_putstr_fd(r[1], k[1]) : ft_putendl_fd(r[1], k[1]);
 	free(r[1]);
 	free(r[0]);
