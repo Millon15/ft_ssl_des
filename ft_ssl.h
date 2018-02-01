@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:47:17 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/01/30 20:38:13 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/01 16:09:26 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,14 +25,19 @@ typedef	struct		s_fl
 	unsigned int	decrypt : 1;
 	unsigned int	encrypt : 1;
 	unsigned int	base64 : 1;
+	unsigned int	des_ecb : 1;
 	unsigned int	bufs : 1;
+	unsigned int	a : 1;
 	char			*in;
 	char			*out;
+	char			*k;
 }					t_fl;
 
 int					ft_printf(const char *s, ...);
 
 int					error(int ac, char **av, char *str, int i);
+int					read_args(int ac, char **av, t_fl *fl, int i);
 int					put_base64(char **av, t_fl *fl, ssize_t ret);
+int					put_des_ecb(char **av, t_fl *fl, ssize_t ret);
 
 #endif
