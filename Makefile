@@ -6,7 +6,7 @@
 #    By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/28 19:24:02 by vbrazas           #+#    #+#              #
-#    Updated: 2018/02/01 16:11:00 by vbrazas          ###   ########.fr        #
+#    Updated: 2018/02/01 19:20:40 by vbrazas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,7 +15,8 @@ LIB		=	ft_printf/libftprintf.a
 SRC		=	ft_ssl.c \
 			read_args.c \
 			error.c \
-			src/base64.c
+			src/base64.c \
+			src/des_ecb.c
 
 OBJ		=	$(SRC:.c=.o)
 CFLAGS	=	

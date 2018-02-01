@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:03:55 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/01 16:09:19 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/01 19:20:07 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ static	int		put_endres(char **av, t_fl *fl)
 {
 	if (fl->base64)
 		return (put_base64(av, fl, 0));
-	// else if (fl->des_ecb)
-	// 	return (put_des_ecb(av, fl, 0));
+	else if (fl->des_ecb)
+		return (put_des_ecb(av, fl, 0));
 	return (-1);
 }
 

@@ -6,7 +6,7 @@
 #    By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/28 19:24:02 by vbrazas           #+#    #+#              #
-#    Updated: 2018/01/30 18:38:25 by vbrazas          ###   ########.fr        #
+#    Updated: 2018/02/01 20:20:59 by vbrazas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -85,7 +85,9 @@ SRC		=	ft_printf.c \
 			libft/ft_pow.c \
 			libft/ft_root.c \
 			libft/ft_fcd.c \
-			libft/ft_iswhitespace.c
+			libft/ft_iswhitespace.c \
+			libft/ft_atoi_base.c \
+			libft/ft_atou_base.c
 
 OBJ		=	$(SRC:.c=.o)
 CFLAGS	=	-Wall -Wextra -Werror

@@ -6,14 +6,14 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:15:48 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/01 16:16:13 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/01 21:17:22 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PERMUTATIONS_H
 # define PERMUTATIONS_H
 
-static unsigned char	PC_1[64] =
+static unsigned char	pc_1[56] =
 {
 	57, 49, 41, 33, 25, 17, 9, 1, 58, 50, 42, 34, 26, 18, 10, 2,
 	59, 51, 43, 35, 27, 19, 11, 3, 60, 52, 44, 36, 63, 55, 47, 39,
