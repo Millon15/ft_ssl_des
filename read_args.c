@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:03:55 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/01 19:20:07 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/03 22:08:47 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,9 @@ static	int		help_read_args(int ac, char **av, t_fl *fl, int i)
 
 int				read_args(int ac, char **av, t_fl *fl, int i)
 {
+	int		i_buf;
+
+	i_buf = i + 1;
 	while (av[++i])
 	{
 		if ((!(ft_strcmp(av[i], "-in")) || !(ft_strcmp(av[i], "-i")) ||\
@@ -55,5 +58,7 @@ int				read_args(int ac, char **av, t_fl *fl, int i)
 		else if (!(help_read_args(ac, av, fl, i)))
 			return ((error(ac, av, NULL, i)));
 	}
+	if ((put_endres(av, fl)) == -1)
+		return ((error(2, av, NULL, i_buf)));
 	return ((put_endres(av, fl)));
 }

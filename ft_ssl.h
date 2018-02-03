@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:47:17 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/03 19:08:11 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/03 21:54:27 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,6 @@
 # include "ft_printf/libft/libft.h"
 
 #include <stdio.h>
-
-
-void	print_b(unsigned long a)
-{
-	int					i;
-
-	i = 0;
-	while (i < 64)
-		printf("%lu", (a << i++) >> 63);
-}
-
 
 typedef	struct		s_fl
 {

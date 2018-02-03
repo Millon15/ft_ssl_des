@@ -6,14 +6,14 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:15:48 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/03 20:47:33 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/03 21:47:38 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PERMUTATIONS_H
 # define PERMUTATIONS_H
 
-static unsigned char	pc_1[56] =
+static unsigned char	key_permutation_1[56] =
 {
 	57, 49, 41, 33, 25, 17, 9, 1, 58, 50, 42, 34, 26, 18, 10, 2,
 	59, 51, 43, 35, 27, 19, 11, 3, 60, 52, 44, 36, 63, 55, 47, 39,
@@ -26,7 +26,7 @@ static unsigned char	key_shift[16] =
 	1, 1, 2, 2, 2, 2, 2, 2, 1, 2, 2, 2, 2, 2, 2, 1
 };
 
-static unsigned char	pc_2[48] =
+static unsigned char	key_permutation_2[48] =
 {
 	14, 17, 11, 24, 1, 5, 3, 28, 15, 6, 21, 10,
 	23, 19, 12, 4, 26, 8, 16, 7, 27, 20, 13, 2,
