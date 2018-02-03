@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/01 21:44:29 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/03 21:26:01 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,27 +21,80 @@ static	char			*decrypt_des_ecb(char *line, t_fl *fl)
 static	unsigned long	permut_pc_1(unsigned long k0)
 {
 	int					i;
+	unsigned long		tmp;
 	unsigned long		k1;
 
-	i = -1;
+	i = 0;
 	k1 = 0;
-	while (++i < 64)
+	while (i < 56)
 	{
-		// printf("%lu", k1 = (k1 | (((k0 << pc_1[i]) >> 63) << (63 - i))));
-		printf("%lu", ((k0 << i) >> 63));
+		tmp = ((k0 >> (64 - pc_1[i++])) << 63) >> 63;
+		k1 <<= 1;
+		k1 += tmp;
 	}
-	// k1 >>= 8;
+	return (k1);
+}
+
+static	void			shift_keys(unsigned long c[], unsigned long d[])
+{
+	int					i;
+	unsigned long		tmp[2];
+
+	i = 0;
+	while (i < 16)
+	{
+		tmp[0] = (c[i] << key_shift[i]) >> 28;
+		tmp[1] = (d[i] << key_shift[i]) >> 28;
+		c[i + 1] = tmp[0] | (c[i] << ((36 + key_shift[i])) >> 36);
+		d[i + 1] = tmp[1] | (d[i] << ((36 + key_shift[i])) >> 36);
+		// print_b(c[i + 1]);
+		// printf("\n");
+		// print_b(d[i + 1]);
+		// printf("\n\n");
+		i++;
+	}
+}
+
+static	unsigned long	permut_pc_2(unsigned long k0, unsigned char perm[], int perm_len, int start_len)
+{
+	int					i;
+	unsigned long		tmp;
+	unsigned long		k1;
+
+	i = 0;
+	k1 = 0;
+	while (i < perm_len)
+	{
+		tmp = (k0 >> (start_len - perm[i++])) & 1;
+		k1 <<= 1;
+		k1 += tmp;
+	}
 	return (k1);
 }
 
 static	char			*encrypt_des_ecb(char *line, t_fl *fl)
 {
-	unsigned long		k0;
-	unsigned long		k1;
+	unsigned long		key;
+	unsigned long		k[17];
+	unsigned long		c[17];
+	unsigned long		d[17];
 
-	k0 = ft_atou_base(fl->k, 16);
-	k1 = permut_pc_1(k0);
-	// printf("%lu\n", k1);
+	key = ft_atou_base(fl->k, 16);
+	k[0] = permut_pc_2(key, pc_1, 56, 64);
+	// print_b(k[0]);
+	// printf("\n%s\n\n", "00000000""11110000110011001010101011110101010101100110011110001111");
+	c[0] = (k[0] >> 28);
+	d[0] = (k[0] << 36) >> 36;
+	shift_keys(c, d);
+	key = 0;
+	while (key++ < 1)
+	{
+		print_b(((c[key] << 28) | d[key]));
+		printf("\n%s\n\n", "00000000""11100001100110010101010111111010101011001100111100011110");
+		k[key] = permut_pc_2(((c[key] << 28) | d[key]), pc_2, 48, 56);
+		print_b(k[key]);
+		printf("\n%s\n\n", "0000000000000000""000110110000001011101111111111000111000001110010");
+	}
 	return (NULL);
 }
 
