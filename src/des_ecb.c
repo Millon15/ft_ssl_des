@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/03 21:26:01 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/03 21:30:09 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,13 +87,11 @@ static	char			*encrypt_des_ecb(char *line, t_fl *fl)
 	d[0] = (k[0] << 36) >> 36;
 	shift_keys(c, d);
 	key = 0;
-	while (key++ < 1)
+	while (key++ < 16)
 	{
-		print_b(((c[key] << 28) | d[key]));
-		printf("\n%s\n\n", "00000000""11100001100110010101010111111010101011001100111100011110");
 		k[key] = permut_pc_2(((c[key] << 28) | d[key]), pc_2, 48, 56);
-		print_b(k[key]);
-		printf("\n%s\n\n", "0000000000000000""000110110000001011101111111111000111000001110010");
+		// print_b(k[key]);
+		// printf("\n");
 	}
 	return (NULL);
 }
