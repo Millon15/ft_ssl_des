@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/03 22:10:34 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/04 15:52:03 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char			*decrypt_des_ecb(char *line, t_fl *fl)
 	return (NULL);
 }
 
-void	print_b(unsigned long a)
+void			print_b(unsigned long a)
 {
 	int					i;
 
