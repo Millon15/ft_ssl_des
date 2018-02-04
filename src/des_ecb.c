@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/04 15:52:03 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/04 17:27:51 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,8 @@ static	void			shift_keys(unsigned long c[], unsigned long d[])
 	}
 }
 
-static	unsigned long	uni_permut(unsigned long k0, unsigned char perm[], int perm_len, int start_len)
+static	unsigned long	uni_permut(unsigned long k0, unsigned char perm[],\
+int perm_len, int start_len)
 {
 	int					i;
 	unsigned long		tmp;
@@ -66,26 +67,38 @@ static	unsigned long	uni_permut(unsigned long k0, unsigned char perm[], int perm
 
 static	char			*encrypt_des_ecb(char *line, t_fl *fl)
 {
-	unsigned long		key;
+	unsigned long		i;
+	unsigned long		m[17];
 	unsigned long		k[17];
-	unsigned long		c[17];
-	unsigned long		d[17];
+	unsigned long		l[17];
+	unsigned long		r[17];
 
-	key = ft_atou_base(fl->k, 16);
-	k[0] = uni_permut(key, key_permutation_1, 56, 64);
+	i = ft_atou_base(fl->k, 16);
+	k[0] = uni_permut(i, key_permutation_1, 56, 64);
 	// print_b(k[0]);
 	// printf("\n%s\n\n", "00000000""11110000110011001010101011110101010101100110011110001111");
-	c[0] = (k[0] >> 28);
-	d[0] = (k[0] << 36) >> 36;
-	shift_keys(c, d);
-	key = 0;
-	while (key++ < 16)
+	l[0] = (k[0] >> 28);
+	r[0] = (k[0] << 36) >> 36;
+	shift_keys(l, r);
+	i = 0;
+	while (i++ < 16)
 	{
-		k[key] = uni_permut(((c[key] << 28) | d[key]), key_permutation_2, 48, 56);
-		// print_b(k[key]);
+		k[i] = uni_permut(((l[i] << 28) | r[i]), key_permutation_2, 48, 56);
+		// print_b(k[i]);
 		// printf("\n");
 	}
-	printf("%s | %zu | %p\n", line, ft_strlen(line), line);
+	// printf("%s | %zu\n | %p\n", line, ft_strlen(line), line);
+	i = ft_atou_base(line, 16);
+	m[0] = uni_permut(i, initial_permutation, 64, 64);
+	l[0] = (m[0] >> 32);
+	r[0] = (m[0] << 32) >> 32;
+	// i = 0;
+	// while (i++ < 16)
+	// {
+	// 	k[i] = uni_permut(((l[i] << 32) | r[i]), , 48, 56);
+	// 	// print_b(k[i]);
+	// 	// printf("\n");
+	// }
 	return (NULL);
 }
 
