@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:15:48 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/04 16:57:28 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/04 19:29:44 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ static unsigned char	initial_permutation[64] =
 	61, 53, 45, 37, 29, 21, 13, 5, 63, 55, 47, 39, 31, 23, 15, 7
 };
 
-static unsigned char	g_expand_permut[48] =
+static unsigned char	expand_permutation[48] =
 {
 	32, 1, 2, 3, 4, 5, 4, 5, 6, 7, 8, 9,
 	8, 9, 10, 11, 12, 13, 12, 13, 14, 15, 16, 17,

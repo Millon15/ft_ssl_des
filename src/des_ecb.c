@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/04 17:27:51 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/04 20:11:10 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,27 @@ int perm_len, int start_len)
 	return (k1);
 }
 
+static	unsigned long	f(unsigned long text, unsigned long ki)
+{
+	unsigned long		l[8];
+	unsigned long		res[2];
+	int					a;
+	int					b;
+	int					c;
+
+	res[0] = uni_permut(text, expand_permutation, 48, 32);
+	res[0] = (ki ^ res[0]) << 16;
+	// print_b(res[0]);
+	// printf("\n%s\n\n", "011000010001011110111010100001100110010100100111");
+	res[1] = 0;
+	a = 0;
+	// while (++a < 8)
+	// {
+		l[a] = (res[0] << (6 * a)) >> (6 * (7 - a)) >> 16;
+	// }
+	return (res[0]);
+}
+
 static	char			*encrypt_des_ecb(char *line, t_fl *fl)
 {
 	unsigned long		i;
@@ -92,12 +113,12 @@ static	char			*encrypt_des_ecb(char *line, t_fl *fl)
 	m[0] = uni_permut(i, initial_permutation, 64, 64);
 	l[0] = (m[0] >> 32);
 	r[0] = (m[0] << 32) >> 32;
-	// i = 0;
+	i = 0 + 1;
 	// while (i++ < 16)
 	// {
-	// 	k[i] = uni_permut(((l[i] << 32) | r[i]), , 48, 56);
-	// 	// print_b(k[i]);
-	// 	// printf("\n");
+		l[i] = r[i - 1];
+		r[i] = l[i - 1] ^ f(r[i - 1], k[i]);
+		// k[i] = uni_permut(((l[i] << 32) | r[i]), , 48, 56);
 	// }
 	return (NULL);
 }
