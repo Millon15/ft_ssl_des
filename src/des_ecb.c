@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/04 20:11:10 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/04 21:39:08 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void			print_b(unsigned long a)
 	i = 0;
 	while (i < 64)
 		printf("%lu", (a << i++) >> 63);
+	printf("\n");
 }
 
 static	void			shift_keys(unsigned long c[], unsigned long d[])
@@ -77,13 +78,23 @@ static	unsigned long	f(unsigned long text, unsigned long ki)
 	res[0] = (ki ^ res[0]) << 16;
 	// print_b(res[0]);
 	// printf("\n%s\n\n", "011000010001011110111010100001100110010100100111");
+	a = -1;
 	res[1] = 0;
-	a = 0;
-	// while (++a < 8)
-	// {
-		l[a] = (res[0] << (6 * a)) >> (6 * (7 - a)) >> 16;
-	// }
-	return (res[0]);
+	while (++a < 8)
+	{
+		l[a] = ((res[0] << (6 * a)) >> (6 * 7)) >> 16;
+		b = ((l[a] << 63) >> 63) | (((l[a] >> 5) << 63) >> 62);
+		c = ((l[a] >> 1) << 60) >> 60;
+		// print_b(l[a]);
+		// print_b(b);
+		// print_b(c);
+		// printf("\n\n");
+		res[1] |= g_sboxes[a][b][c] << (4 * (-a + 7));
+		print_b(res[1]);
+	}
+	// res[0] = res[1] | res[2] | res[3] | res[4] | res[5] | res[6] | res[7] | res[8];
+	print_b(res[1]);
+	return (res[1]);
 }
 
 static	char			*encrypt_des_ecb(char *line, t_fl *fl)
