@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:03:55 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/03 22:08:47 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/04 15:48:25 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ static	int		help_read_args(int ac, char **av, t_fl *fl, int i)
 		return ((fl->decrypt = 1));
 	else if (!(ft_strcmp(av[i], "-a")))
 		return ((fl->a = 1));
-	return (0);
+	return (-1);
 }
 
 int				read_args(int ac, char **av, t_fl *fl, int i)
@@ -45,7 +45,8 @@ int				read_args(int ac, char **av, t_fl *fl, int i)
 	{
 		if ((!(ft_strcmp(av[i], "-in")) || !(ft_strcmp(av[i], "-i")) ||\
 		!(ft_strcmp(av[i], "-out")) || !(ft_strcmp(av[i], "-o")) ||\
-		!(ft_strcmp(av[i], "-k")) || !(ft_strcmp(av[i], "-K"))) && !av[i + 1])
+		!(ft_strcmp(av[i], "-k")) || !(ft_strcmp(av[i], "-K")) ||\
+		!(ft_strcmp(av[i], "-bufsize"))) && !av[i + 1])
 			return ((error(ac, av, (char *)1, i)));
 		else if (!(ft_strcmp(av[i], "-in")) || !(ft_strcmp(av[i], "-i")))
 			fl->in = av[++i];
@@ -53,12 +54,12 @@ int				read_args(int ac, char **av, t_fl *fl, int i)
 			fl->out = av[++i];
 		else if (!(ft_strcmp(av[i], "-k")) || !(ft_strcmp(av[i], "-K")))
 			fl->k = av[++i];
-		else if ((!(ft_strcmp(av[i], "-bufsize"))) && av[i + 1])
+		else if (!(ft_strcmp(av[i], "-bufsize")))
 			fl->bufs = ft_atoi(av[++i]);
-		else if (!(help_read_args(ac, av, fl, i)))
+		else if ((help_read_args(ac, av, fl, i)) == -1)
 			return ((error(ac, av, NULL, i)));
 	}
 	if ((put_endres(av, fl)) == -1)
 		return ((error(2, av, NULL, i_buf)));
-	return ((put_endres(av, fl)));
+	return (0);
 }

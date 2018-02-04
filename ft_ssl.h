@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:47:17 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/03 21:54:27 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/04 15:29:39 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <sys/types.h>
 # include <sys/uio.h>
 # include <fcntl.h>
-# include "ft_printf/libft/libft.h"
+# include "libft/libft.h"
 
 #include <stdio.h>
 
