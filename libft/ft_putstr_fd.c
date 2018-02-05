@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/06 22:02:23 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/01/16 14:46:50 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/05 14:12:46 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,5 +14,8 @@
 
 ssize_t		ft_putstr_fd(char const *s, int fd)
 {
-	return (write(fd, s, ft_strlen(s)));
+	if (s)
+		return (write(fd, s, ft_strlen(s)));
+	else
+		return (0);
 }

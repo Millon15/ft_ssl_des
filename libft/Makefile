@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2017/11/10 20:38:08 by vbrazas           #+#    #+#              #
-#    Updated: 2018/02/04 15:39:23 by vbrazas          ###   ########.fr        #
+#    Created: 2017/12/28 19:24:02 by vbrazas           #+#    #+#              #
+#    Updated: 2018/02/05 15:57:45 by vbrazas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -73,16 +73,16 @@ SRC =	ft_strlen.c \
 		ft_swap.c \
 		ft_range.c \
 		ft_foreach.c \
-		ft_itoa_base.c \
 		ft_pow.c \
 		ft_root.c \
 		ft_fcd.c \
 		ft_iswhitespace.c \
 		ft_atoi_base.c \
-		ft_atou_base.c
-OBJ =	$(SRC:.c=.o)
-CFLAGS = -Wall -Wextra -Werror
-
+		ft_atou_base.c \
+		ft_lstdelcont.c
+OBJ_D	=	obj/
+OBJ		=	$(addprefix $(OBJ_D), $(SRC:.c=.o))
+CFLAGS	=	-Wall -Wextra -Werror
 
 all: $(NAME)
 
@@ -90,7 +90,12 @@ $(NAME): $(OBJ)
 	ar rc $(NAME) $(OBJ)
 	ranlib $(NAME)
 
-%.o: %.c
+$(OBJ): | $(OBJ_D)
+
+$(OBJ_D):
+	mkdir $(OBJ_D)
+
+$(OBJ_D)%.o: %.c
 	gcc $(CFLAGS) -o $@ -c $<
 
 clean:
@@ -98,6 +103,7 @@ clean:
 
 fclean: clean
 	rm -f $(NAME)
+	rm -rf $(OBJ_D)
 
 re: fclean all
 

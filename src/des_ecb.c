@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/04 21:39:08 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/05 16:59:12 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,10 +90,10 @@ static	unsigned long	f(unsigned long text, unsigned long ki)
 		// print_b(c);
 		// printf("\n\n");
 		res[1] |= g_sboxes[a][b][c] << (4 * (-a + 7));
-		print_b(res[1]);
+		// print_b(res[1]);
 	}
 	// res[0] = res[1] | res[2] | res[3] | res[4] | res[5] | res[6] | res[7] | res[8];
-	print_b(res[1]);
+	// print_b(res[1]);
 	return (res[1]);
 }
 
@@ -125,12 +125,17 @@ static	char			*encrypt_des_ecb(char *line, t_fl *fl)
 	l[0] = (m[0] >> 32);
 	r[0] = (m[0] << 32) >> 32;
 	i = 0 + 1;
-	// while (i++ < 16)
-	// {
+	while (i++ < 16)
+	{
 		l[i] = r[i - 1];
 		r[i] = l[i - 1] ^ f(r[i - 1], k[i]);
-		// k[i] = uni_permut(((l[i] << 32) | r[i]), , 48, 56);
-	// }
+		k[i] = uni_permut(((r[i] << 32) | l[i]), g_final_permut, 64, 64);
+		// print_b(k[i]);
+	}
+	print_b(r[16]);
+	print_b(l[16]);
+	// print_b(((r[16] << 32) | l[16]));
+	// print_b(k[16]);
 	return (NULL);
 }
 
