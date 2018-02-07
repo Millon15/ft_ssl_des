@@ -1,22 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstdelcont.c                                    :+:      :+:    :+:   */
+/*   ft_utoa_base.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/11 18:10:46 by vbrazas           #+#    #+#             */
-/*   Updated: 2017/11/15 22:17:55 by vbrazas          ###   ########.fr       */
+/*   Created: 2018/02/08 00:11:44 by vbrazas           #+#    #+#             */
+/*   Updated: 2018/02/08 00:21:52 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include <stdlib.h>
 
-void	ft_lstdelcont(void *content, size_t content_size)
+char	*ft_utoa_base(unsigned long value, int base)
 {
-	if (content != NULL)
+	int				j;
+	unsigned long	b;
+	char			*res;
+
+	if (base > 16 || base < 2)
+		return (0);
+	j = 1;
+	b = value;
+	while (b /= base)
+		j++;
+	b = value;
+	res = (char *)malloc(sizeof(char) * j);
+	res[j--] = '\0';
+	if (value == 0)
+		res[0] = '0';
+	while (b)
 	{
-		free(content);
-		content_size = 0;
+		res[j--] = "0123456789ABCDEF"[b % base];
+		b /= base;
 	}
+	return (res);
 }

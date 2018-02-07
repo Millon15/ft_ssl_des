@@ -6,7 +6,7 @@
 #    By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/28 19:24:02 by vbrazas           #+#    #+#              #
-#    Updated: 2018/02/05 15:57:45 by vbrazas          ###   ########.fr        #
+#    Updated: 2018/02/08 00:17:18 by vbrazas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -79,7 +79,7 @@ SRC =	ft_strlen.c \
 		ft_iswhitespace.c \
 		ft_atoi_base.c \
 		ft_atou_base.c \
-		ft_lstdelcont.c
+		ft_utoa_base.c
 OBJ_D	=	obj/
 OBJ		=	$(addprefix $(OBJ_D), $(SRC:.c=.o))
 CFLAGS	=	-Wall -Wextra -Werror

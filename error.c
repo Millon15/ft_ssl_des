@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 20:09:45 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/01/30 21:33:55 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/07 23:22:48 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,23 +17,20 @@ static	void	help(int ac, char **av, char *str, int i)
 	if (ac > 2)
 	{
 		if (!str)
-		{
 			ft_putstr("unknown option '");
+		else if ((unsigned long)str == 1)
+			ft_putstr("missing file argument for '");
+		else if ((unsigned long)str == 2)
+			ft_putstr("missing '-k' argument for '");
+		if ((unsigned long)str == 2 || (unsigned long)str == 1 || !str)
 			ft_putstr(av[i]);
-			ft_putstr("'\n");
-		}
-		else
-		{
-			ft_putstr("missing file argument for ");
-			ft_putendl(av[i]);
-		}
-		ft_putstr("usage: ft_ssl command [command opts] [command args]\n\n"
+		ft_putstr("'\nusage: ft_ssl command [command opts] [command args]\n\n"
 		"Valid command opts values:\n\n"
 		"-in or -i <file>\tInput file to read from (default stdin)\n"
 		"-out or -o <file>\tOutput file to write to (default stdout)\n"
 		"-bufsize <size>\t\tSpecify the buffer size to use for I/O\n"
-		"-e\t\t\tEncrypt the input data\n"
-		"-d\t\t\tDencrypt the input data\n");
+		"-e\t\t\tEncrypt the input data\n""-d\t\t\tDencrypt the input data\n"
+		"-k <key>\t\t\tkey for des is the next argument\n");
 	}
 }
 

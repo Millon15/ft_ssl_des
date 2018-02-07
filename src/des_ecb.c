@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/05 16:59:12 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/08 00:22:33 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,9 +92,10 @@ static	unsigned long	f(unsigned long text, unsigned long ki)
 		res[1] |= g_sboxes[a][b][c] << (4 * (-a + 7));
 		// print_b(res[1]);
 	}
-	// res[0] = res[1] | res[2] | res[3] | res[4] | res[5] | res[6] | res[7] | res[8];
 	// print_b(res[1]);
-	return (res[1]);
+	res[0] = uni_permut(res[1], g_pbox_permutation, 32, 32);
+	// print_b(res[0]);
+	return (res[0]);
 }
 
 static	char			*encrypt_des_ecb(char *line, t_fl *fl)
@@ -108,7 +109,7 @@ static	char			*encrypt_des_ecb(char *line, t_fl *fl)
 	i = ft_atou_base(fl->k, 16);
 	k[0] = uni_permut(i, key_permutation_1, 56, 64);
 	// print_b(k[0]);
-	// printf("\n%s\n\n", "00000000""11110000110011001010101011110101010101100110011110001111");
+	// printf("%s\n\n", "00000000""11110000110011001010101011110101010101100110011110001111");
 	l[0] = (k[0] >> 28);
 	r[0] = (k[0] << 36) >> 36;
 	shift_keys(l, r);
@@ -124,19 +125,19 @@ static	char			*encrypt_des_ecb(char *line, t_fl *fl)
 	m[0] = uni_permut(i, initial_permutation, 64, 64);
 	l[0] = (m[0] >> 32);
 	r[0] = (m[0] << 32) >> 32;
-	i = 0 + 1;
-	while (i++ < 16)
+	i = 0;
+	while (++i <= 16)
 	{
 		l[i] = r[i - 1];
 		r[i] = l[i - 1] ^ f(r[i - 1], k[i]);
-		k[i] = uni_permut(((r[i] << 32) | l[i]), g_final_permut, 64, 64);
-		// print_b(k[i]);
+		// print_b(r[i]);
 	}
-	print_b(r[16]);
-	print_b(l[16]);
-	// print_b(((r[16] << 32) | l[16]));
-	// print_b(k[16]);
-	return (NULL);
+	// print_b(l[16]);
+	// print_b(r[16]);
+	i = uni_permut(((r[16] << 32) | l[16]), g_final_permutation, 64, 64);
+	// print_b(i);
+	// printf("%s\n\n", "1000010111101000000100110101010000001111000010101011010000000101");
+	return (ft_utoa_base(i, 16));
 }
 
 int						put_des_ecb(char **av, t_fl *fl, ssize_t ret)
