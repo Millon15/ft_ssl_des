@@ -6,7 +6,7 @@
 #    By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/28 19:24:02 by vbrazas           #+#    #+#              #
-#    Updated: 2018/02/04 18:23:30 by vbrazas          ###   ########.fr        #
+#    Updated: 2018/02/10 15:43:18 by vbrazas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,8 +17,8 @@ SRC		=	ft_ssl.c \
 			read_args.c \
 			error.c \
 			$(SRC_D)base64.c \
-			$(SRC_D)des_ecb.c
-
+			$(SRC_D)des_ecb.c \
+			$(SRC_D)help_des_ecb.c
 OBJ_D	=	obj/
 OBJ		=	$(addprefix $(OBJ_D), $(SRC:.c=.o))
 LFLAGS	=	-lft -L $(LIB)

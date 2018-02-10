@@ -6,27 +6,12 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/08 00:22:33 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/10 16:31:19 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_ssl.h"
 #include "permutations.h"
-
-char			*decrypt_des_ecb(char *line, t_fl *fl)
-{
-	return (NULL);
-}
-
-void			print_b(unsigned long a)
-{
-	int					i;
-
-	i = 0;
-	while (i < 64)
-		printf("%lu", (a << i++) >> 63);
-	printf("\n");
-}
 
 static	void			shift_keys(unsigned long c[], unsigned long d[])
 {
@@ -98,7 +83,7 @@ static	unsigned long	f(unsigned long text, unsigned long ki)
 	return (res[0]);
 }
 
-static	char			*encrypt_des_ecb(char *line, t_fl *fl)
+char					*encrypt_des_ecb(unsigned long buf, t_fl *fl)
 {
 	unsigned long		i;
 	unsigned long		m[17];
@@ -106,8 +91,9 @@ static	char			*encrypt_des_ecb(char *line, t_fl *fl)
 	unsigned long		l[17];
 	unsigned long		r[17];
 
-	i = ft_atou_base(fl->k, 16);
-	k[0] = uni_permut(i, key_permutation_1, 56, 64);
+	// i = ft_atou_base(fl->k, 16);
+	// i = to_digit(fl->k);
+	k[0] = uni_permut(buf, key_permutation_1, 56, 64);
 	// print_b(k[0]);
 	// printf("%s\n\n", "00000000""11110000110011001010101011110101010101100110011110001111");
 	l[0] = (k[0] >> 28);
@@ -121,8 +107,7 @@ static	char			*encrypt_des_ecb(char *line, t_fl *fl)
 		// printf("\n");
 	}
 	// printf("%s | %zu\n | %p\n", line, ft_strlen(line), line);
-	i = ft_atou_base(line, 16);
-	m[0] = uni_permut(i, initial_permutation, 64, 64);
+	m[0] = uni_permut(buf, initial_permutation, 64, 64);
 	l[0] = (m[0] >> 32);
 	r[0] = (m[0] << 32) >> 32;
 	i = 0;
@@ -137,7 +122,8 @@ static	char			*encrypt_des_ecb(char *line, t_fl *fl)
 	i = uni_permut(((r[16] << 32) | l[16]), g_final_permutation, 64, 64);
 	// print_b(i);
 	// printf("%s\n\n", "1000010111101000000100110101010000001111000010101011010000000101");
-	return (ft_utoa_base(i, 16));
+	// return (ft_utoa_base(i, 16));
+	return (from_digit(i));
 }
 
 int						put_des_ecb(char **av, t_fl *fl, ssize_t ret)
@@ -160,7 +146,7 @@ int						put_des_ecb(char **av, t_fl *fl, ssize_t ret)
 		free(r[2]);
 	}
 	r[2] = (fl->decrypt ? decrypt_des_ecb(r[1], fl) :\
-		encrypt_des_ecb(r[1], fl));
+		pre_encrypt_des_ecb(r[1], fl));
 	fl->decrypt ? ft_putstr_fd(r[2], k[1]) : ft_putendl_fd(r[2], k[1]);
 	free(r[2]);
 	free(r[1]);
