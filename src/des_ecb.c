@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/10 16:31:19 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/13 18:38:41 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -147,7 +147,7 @@ int						put_des_ecb(char **av, t_fl *fl, ssize_t ret)
 	}
 	r[2] = (fl->decrypt ? decrypt_des_ecb(r[1], fl) :\
 		pre_encrypt_des_ecb(r[1], fl));
-	fl->decrypt ? ft_putstr_fd(r[2], k[1]) : ft_putendl_fd(r[2], k[1]);
+	ft_putendl_fd(r[2], k[1]);
 	free(r[2]);
 	free(r[1]);
 	free(r[0]);
