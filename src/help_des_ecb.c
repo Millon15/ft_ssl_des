@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 15:41:02 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/13 18:40:01 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/18 12:24:16 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,29 +35,23 @@ unsigned long	to_digit(char *s)
 	int				k;
 
 	i = 0;
-	res = 0;
+	k = 0;
 	l = 1;
+	res = 0;
+	res <<= 8;
+	res |= s[i] ? s[i++] : k;
 	while ((l % 8))
 	{
 		res <<= 8;
-		res |= s[i] ? s[i++] : 0;
+		if (!s[i] && !k)
+		{
+			k = 9 - l;
+			printf("k = %d\n", k);
+		}
+		res |= (s[i] ? s[i++] : k);
 		l++;
 	}
-	// if (!(s[i]))
-	// {
-	// 	l = 64;
-	// 	k = 0;
-	// 	while (!(res >> l))
-	// 	{
-	// 		l -= 8;
-	// 		k++;
-	// 	}
-	// 	while (k && !(res >> 56))
-	// 	{
-	// 		res <<= 8;
-	// 		res |= k;
-	// 	}
-	// }
+	printf("%d, %d, %d, %lu\n", l, i, k, res);
 	return (res);
 }
 

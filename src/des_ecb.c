@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/13 18:38:41 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/18 11:32:33 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,10 @@ static	void			shift_keys(unsigned long c[], unsigned long d[])
 	i = 0;
 	while (i < 16)
 	{
-		tmp[0] = (c[i] << key_shift[i]) >> 28;
-		tmp[1] = (d[i] << key_shift[i]) >> 28;
-		c[i + 1] = tmp[0] | (c[i] << ((36 + key_shift[i])) >> 36);
-		d[i + 1] = tmp[1] | (d[i] << ((36 + key_shift[i])) >> 36);
+		tmp[0] = (c[i] << g_key_shift[i]) >> 28;
+		tmp[1] = (d[i] << g_key_shift[i]) >> 28;
+		c[i + 1] = tmp[0] | (c[i] << ((36 + g_key_shift[i])) >> 36);
+		d[i + 1] = tmp[1] | (d[i] << ((36 + g_key_shift[i])) >> 36);
 		// print_b(c[i + 1]);
 		// printf("\n");
 		// print_b(d[i + 1]);
@@ -59,7 +59,7 @@ static	unsigned long	f(unsigned long text, unsigned long ki)
 	int					b;
 	int					c;
 
-	res[0] = uni_permut(text, expand_permutation, 48, 32);
+	res[0] = uni_permut(text, g_expand_permutation, 48, 32);
 	res[0] = (ki ^ res[0]) << 16;
 	// print_b(res[0]);
 	// printf("\n%s\n\n", "011000010001011110111010100001100110010100100111");
@@ -93,7 +93,7 @@ char					*encrypt_des_ecb(unsigned long buf, t_fl *fl)
 
 	// i = ft_atou_base(fl->k, 16);
 	// i = to_digit(fl->k);
-	k[0] = uni_permut(buf, key_permutation_1, 56, 64);
+	k[0] = uni_permut(buf, g_key_permutation_1, 56, 64);
 	// print_b(k[0]);
 	// printf("%s\n\n", "00000000""11110000110011001010101011110101010101100110011110001111");
 	l[0] = (k[0] >> 28);
@@ -102,12 +102,12 @@ char					*encrypt_des_ecb(unsigned long buf, t_fl *fl)
 	i = 0;
 	while (i++ < 16)
 	{
-		k[i] = uni_permut(((l[i] << 28) | r[i]), key_permutation_2, 48, 56);
+		k[i] = uni_permut(((l[i] << 28) | r[i]), g_key_permutation_2, 48, 56);
 		// print_b(k[i]);
 		// printf("\n");
 	}
 	// printf("%s | %zu\n | %p\n", line, ft_strlen(line), line);
-	m[0] = uni_permut(buf, initial_permutation, 64, 64);
+	m[0] = uni_permut(buf, g_initial_permutation, 64, 64);
 	l[0] = (m[0] >> 32);
 	r[0] = (m[0] << 32) >> 32;
 	i = 0;
@@ -147,7 +147,7 @@ int						put_des_ecb(char **av, t_fl *fl, ssize_t ret)
 	}
 	r[2] = (fl->decrypt ? decrypt_des_ecb(r[1], fl) :\
 		pre_encrypt_des_ecb(r[1], fl));
-	ft_putendl_fd(r[2], k[1]);
+	ft_putstr_fd(r[2], k[1]);
 	free(r[2]);
 	free(r[1]);
 	free(r[0]);
