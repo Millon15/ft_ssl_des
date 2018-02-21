@@ -1,0 +1,1 @@
+./ft_ssl des-ecb -K 0E329232EA6D0D73 -in test/des/vaseline.txt >> test/des/out_vaseline.txt

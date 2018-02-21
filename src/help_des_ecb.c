@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 15:41:02 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/20 21:36:17 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/21 18:53:01 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,14 +42,11 @@ unsigned long	to_digit(char *s)
 	{
 		res <<= 8;
 		if (!s[i] && !k)
-		{
 			k = 8 - l;
-			// printf("\nk = %d\n", k);
-		}
 		res |= (s[i] ? s[i++] : k);
 		l++;
 	}
-	// printf("%d, %d, %d, %lu\n", l, i, k, res);
+	// printf("%s ", ft_utoa_base(res, 16));
 	return (res);
 }
 
@@ -59,6 +56,7 @@ char			*from_digit(unsigned long res)
 	int		a;
 	int		i;
 
+	// printf("%s ", ft_utoa_base(res, 16));
 	s = (char *)malloc(sizeof(char) * 9);
 	i = 0;
 	a = 0;
@@ -82,22 +80,17 @@ char			*pre_encrypt_des_ecb(char *line, t_fl *fl)
 	l = !(l % 8) ? (l + 8) : l;
 	line2 = (char *)malloc(sizeof(char) * (l + 1));
 	line2[l] = '\0';
-	printf("%lu ", to_digit(line2));
 	line2 = encrypt_des_ecb(to_digit(line), fl);
 	i = 8;
-	// printf("l = %i\n", l);
 	while ((l - i) > 0)
 	{
 		buf = encrypt_des_ecb(to_digit(line + i), fl);
-		printf("%lu ", to_digit(buf));
-		// printf("AAA : %zu | %zu | ", l - i, i);
-		// printf("%s\n", buf);
 		line2_buf = line2;
 		line2 = ft_strjoin(line2, buf);
 		free(line2_buf);
 		free(buf);
 		i += 8;
 	}
-	printf("\n\n");
+	// printf("\n\n");
 	return (line2);
 }

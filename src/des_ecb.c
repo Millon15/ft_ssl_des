@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/18 11:32:33 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/21 19:04:58 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static	void			shift_keys(unsigned long c[], unsigned long d[])
 }
 
 static	unsigned long	uni_permut(unsigned long k0, unsigned char perm[],\
-int perm_len, int start_len)
+int end_len, int start_len)
 {
 	int					i;
 	unsigned long		tmp;
@@ -42,7 +42,7 @@ int perm_len, int start_len)
 
 	i = 0;
 	k1 = 0;
-	while (i < perm_len)
+	while (i < end_len)
 	{
 		tmp = (k0 >> (start_len - perm[i++])) & 1;
 		k1 <<= 1;
@@ -91,9 +91,10 @@ char					*encrypt_des_ecb(unsigned long buf, t_fl *fl)
 	unsigned long		l[17];
 	unsigned long		r[17];
 
-	// i = ft_atou_base(fl->k, 16);
-	// i = to_digit(fl->k);
-	k[0] = uni_permut(buf, g_key_permutation_1, 56, 64);
+	// printf("key = %lu\n", ft_atou_base(fl->k, 16));
+	// print_b(ft_atou_base(fl->k, 16));
+	// printf("%s\n\n", "0001001100110100010101110111100110011011101111001101111111110001");
+	k[0] = uni_permut(ft_atou_base(fl->k, 16), g_key_permutation_1, 56, 64);
 	// print_b(k[0]);
 	// printf("%s\n\n", "00000000""11110000110011001010101011110101010101100110011110001111");
 	l[0] = (k[0] >> 28);
@@ -104,7 +105,6 @@ char					*encrypt_des_ecb(unsigned long buf, t_fl *fl)
 	{
 		k[i] = uni_permut(((l[i] << 28) | r[i]), g_key_permutation_2, 48, 56);
 		// print_b(k[i]);
-		// printf("\n");
 	}
 	// printf("%s | %zu\n | %p\n", line, ft_strlen(line), line);
 	m[0] = uni_permut(buf, g_initial_permutation, 64, 64);

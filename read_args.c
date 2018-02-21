@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:03:55 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/07 23:17:03 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/21 16:46:23 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,15 @@ static	int		put_endres(char **av, t_fl *fl)
 	else if (fl->des_ecb)
 		return (put_des_ecb(av, fl, 0));
 	return (-1);
+}
+
+static	int		help_check_args(int ac, char **av, t_fl *fl, int i_buf)
+{
+	if (!(fl->k) && fl->des_ecb)
+		return ((error(3, av, (char *)2, i_buf)));
+	if ((put_endres(av, fl)) == -1)
+		return ((error(2, av, NULL, i_buf)));
+	return (0);
 }
 
 static	int		help_read_args(int ac, char **av, t_fl *fl, int i)
@@ -34,15 +43,6 @@ static	int		help_read_args(int ac, char **av, t_fl *fl, int i)
 	else if (!(ft_strcmp(av[i], "-a")))
 		return ((fl->a = 1));
 	return (-1);
-}
-
-static	int		help_check_args(int ac, char **av, t_fl *fl, int i_buf)
-{
-	if (!(fl->k) && fl->des_ecb)
-		return ((error(3, av, (char *)2, i_buf)));
-	if ((put_endres(av, fl)) == -1)
-		return ((error(2, av, NULL, i_buf)));
-	return (0);
 }
 
 int				read_args(int ac, char **av, t_fl *fl, int i)
