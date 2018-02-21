@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/10 15:41:02 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/18 12:24:16 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/20 21:36:17 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,22 +36,20 @@ unsigned long	to_digit(char *s)
 
 	i = 0;
 	k = 0;
-	l = 1;
+	l = 0;
 	res = 0;
-	res <<= 8;
-	res |= s[i] ? s[i++] : k;
-	while ((l % 8))
+	while (l != 8)
 	{
 		res <<= 8;
 		if (!s[i] && !k)
 		{
-			k = 9 - l;
-			printf("k = %d\n", k);
+			k = 8 - l;
+			// printf("\nk = %d\n", k);
 		}
 		res |= (s[i] ? s[i++] : k);
 		l++;
 	}
-	printf("%d, %d, %d, %lu\n", l, i, k, res);
+	// printf("%d, %d, %d, %lu\n", l, i, k, res);
 	return (res);
 }
 
@@ -81,14 +79,17 @@ char			*pre_encrypt_des_ecb(char *line, t_fl *fl)
 	int			i;
 
 	l = ft_strlen(line);
+	l = !(l % 8) ? (l + 8) : l;
 	line2 = (char *)malloc(sizeof(char) * (l + 1));
 	line2[l] = '\0';
+	printf("%lu ", to_digit(line2));
 	line2 = encrypt_des_ecb(to_digit(line), fl);
 	i = 8;
 	// printf("l = %i\n", l);
 	while ((l - i) > 0)
 	{
 		buf = encrypt_des_ecb(to_digit(line + i), fl);
+		printf("%lu ", to_digit(buf));
 		// printf("AAA : %zu | %zu | ", l - i, i);
 		// printf("%s\n", buf);
 		line2_buf = line2;
@@ -97,21 +98,6 @@ char			*pre_encrypt_des_ecb(char *line, t_fl *fl)
 		free(buf);
 		i += 8;
 	}
-	// printf("%zu | %zu | %zu\n", l - i, l, i);
-	// if (!(l - i))
-	// 	return (line2);
-	// buf = (char *)ft_memalloc(sizeof(char) * 9);
-	// i = l - i;
-	// ft_memcpy(buf, line + i, i);
-	// while (i < 8)
-	// 	buf[i++] = '0';
-	// printf("AAA : %i | %s\n", buf[0], buf);
-	// line2_buf = buf;
-	// buf = encrypt_des_ecb(to_digit(buf), fl);
-	// free(line2_buf);
-	// line2_buf = line2;
-	// line2 = ft_strjoin(line2, buf);
-	// free(line2_buf);
-	// free(buf);
+	printf("\n\n");
 	return (line2);
 }

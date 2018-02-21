@@ -6,7 +6,7 @@
 #    By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/28 19:24:02 by vbrazas           #+#    #+#              #
-#    Updated: 2018/02/08 00:17:18 by vbrazas          ###   ########.fr        #
+#    Updated: 2018/02/20 17:39:59 by vbrazas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -56,6 +56,7 @@ SRC =	ft_strlen.c \
 		ft_strtrim.c \
 		ft_strsplit.c \
 		ft_itoa.c \
+		ft_itoa_base.c \
 		ft_putchar.c \
 		ft_putstr.c \
 		ft_putendl.c \
