@@ -1,33 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   help_des_ecb.c                                     :+:      :+:    :+:   */
+/*   des.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2018/02/10 15:41:02 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/21 18:53:01 by vbrazas          ###   ########.fr       */
+/*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
+/*   Updated: 2018/02/21 19:18:56 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_ssl.h"
 
-char			*decrypt_des_ecb(char *line, t_fl *fl)
-{
-	return (NULL);
-}
-
-void			print_b(unsigned long a)
-{
-	int			i;
-
-	i = 0;
-	while (i < 64)
-		printf("%lu", (a << i++) >> 63);
-	printf("\n");
-}
-
-unsigned long	to_digit(char *s)
+static	unsigned long	to_digit(char *s)
 {
 	unsigned long	res;
 	int				i;
@@ -50,25 +35,7 @@ unsigned long	to_digit(char *s)
 	return (res);
 }
 
-char			*from_digit(unsigned long res)
-{
-	char	*s;
-	int		a;
-	int		i;
-
-	// printf("%s ", ft_utoa_base(res, 16));
-	s = (char *)malloc(sizeof(char) * 9);
-	i = 0;
-	a = 0;
-	while (a != 64)
-	{
-		s[i++] = (res << a) >> 56;
-		a += 8;
-	}
-	return (s);
-}
-
-char			*pre_encrypt_des_ecb(char *line, t_fl *fl)
+static	char			*pre_encrypt_des_ecb(char *line, t_fl *fl)
 {
 	char		*line2;
 	char		*line2_buf;
@@ -93,4 +60,32 @@ char			*pre_encrypt_des_ecb(char *line, t_fl *fl)
 	}
 	// printf("\n\n");
 	return (line2);
+}
+
+int						put_des_ecb(char **av, t_fl *fl, ssize_t ret)
+{
+	char		*r[3];
+	int			k[3];
+
+	if ((k[0] = fl->in ? open(fl->in, O_RDONLY) : 0) == -1)
+		return (error(-1, av, fl->in, 0));
+	if ((k[1] = fl->out ? open(fl->out, O_WRONLY) : 1) == -1)
+		return (error(-1, av, fl->out, 0));
+	k[2] = (fl->bufs ? fl->bufs : BUFF_SIZE);
+	r[0] = (char *)malloc(sizeof(char) * (k[2] + 1));
+	r[1] = (char *)ft_memalloc(sizeof(char) * 1);
+	while ((ret = read(k[0], r[0], k[2])))
+	{
+		r[0][ret] = '\0';
+		r[2] = r[1];
+		r[1] = ft_strjoin(r[0], r[1]);
+		free(r[2]);
+	}
+	r[2] = (fl->decrypt ? decrypt_des_ecb(r[1], fl) :\
+		pre_encrypt_des_ecb(r[1], fl));
+	ft_putstr_fd(r[2], k[1]);
+	free(r[2]);
+	free(r[1]);
+	free(r[0]);
+	return (0);
 }

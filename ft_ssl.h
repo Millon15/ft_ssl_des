@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:47:17 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/10 16:42:47 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/21 19:31:09 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,17 +33,12 @@ typedef	struct		s_fl
 	char			*k;
 }					t_fl;
 
-int					ft_printf(const char *s, ...);
-
 int					error(int ac, char **av, char *str, int i);
 int					read_args(int ac, char **av, t_fl *fl, int i);
 int					put_base64(char **av, t_fl *fl, ssize_t ret);
 int					put_des_ecb(char **av, t_fl *fl, ssize_t ret);
-char				*pre_encrypt_des_ecb(char *line, t_fl *fl);
 char				*encrypt_des_ecb(unsigned long buf, t_fl *fl);
 char				*decrypt_des_ecb(char *line, t_fl *fl);
-unsigned long		to_digit(char *s);
-char				*from_digit(unsigned long res);
 void				print_b(unsigned long a);
 
 
