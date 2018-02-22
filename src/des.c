@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/21 19:18:56 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/22 16:46:40 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,24 @@ static	unsigned long	to_digit(char *s)
 	}
 	// printf("%s ", ft_utoa_base(res, 16));
 	return (res);
+}
+
+char					*from_digit(unsigned long res)
+{
+	char	*s;
+	int		a;
+	int		i;
+
+	// printf("%s ", ft_utoa_base(res, 16));
+	s = (char *)malloc(sizeof(char) * 9);
+	i = 0;
+	a = 0;
+	while (a != 64)
+	{
+		s[i++] = (res << a) >> 56;
+		a += 8;
+	}
+	return (s);
 }
 
 static	char			*pre_encrypt_des_ecb(char *line, t_fl *fl)
@@ -81,9 +99,10 @@ int						put_des_ecb(char **av, t_fl *fl, ssize_t ret)
 		r[1] = ft_strjoin(r[0], r[1]);
 		free(r[2]);
 	}
-	r[2] = (fl->decrypt ? decrypt_des_ecb(r[1], fl) :\
-		pre_encrypt_des_ecb(r[1], fl));
-	ft_putstr_fd(r[2], k[1]);
+	r[2] = (fl->decrypt ? decrypt_des_ecb(r[1], fl)\
+	: pre_encrypt_des_ecb(r[1], fl));
+	fl->a ? ft_putstr_fd(encrypt_base64(r[2], ft_strlen(r[2]), 0, 0), k[1])\
+	: ft_putstr_fd(r[2], k[1]);
 	free(r[2]);
 	free(r[1]);
 	free(r[0]);

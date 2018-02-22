@@ -6,30 +6,13 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/21 19:17:58 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/22 16:26:07 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_ssl.h"
 #include "permutations.h"
 
-static	char			*from_digit(unsigned long res)
-{
-	char	*s;
-	int		a;
-	int		i;
-
-	// printf("%s ", ft_utoa_base(res, 16));
-	s = (char *)malloc(sizeof(char) * 9);
-	i = 0;
-	a = 0;
-	while (a != 64)
-	{
-		s[i++] = (res << a) >> 56;
-		a += 8;
-	}
-	return (s);
-}
 
 static	void			shift_keys(unsigned long c[], unsigned long d[])
 {
@@ -143,3 +126,51 @@ char				*encrypt_des_ecb(unsigned long buf, t_fl *fl)
 	// return (ft_utoa_base(i, 16));
 	return (from_digit(i));
 }
+
+char				*decrypt_des_ecb(char *line, t_fl *fl)
+{
+	return (NULL);
+}
+
+// char				*dencrypt_des_ecb(unsigned long buf, t_fl *fl)
+// {
+// 	unsigned long		i;
+// 	unsigned long		m[17];
+// 	unsigned long		k[17];
+// 	unsigned long		l[17];
+// 	unsigned long		r[17];
+
+// 	// printf("key = %lu\n", ft_atou_base(fl->k, 16));
+// 	// print_b(ft_atou_base(fl->k, 16));
+// 	// printf("%s\n\n", "0001001100110100010101110111100110011011101111001101111111110001");
+// 	k[0] = uni_permut(ft_atou_base(fl->k, 16), g_key_permutation_1, 56, 64);
+// 	// print_b(k[0]);
+// 	// printf("%s\n\n", "00000000""11110000110011001010101011110101010101100110011110001111");
+// 	l[0] = (k[0] >> 28);
+// 	r[0] = (k[0] << 36) >> 36;
+// 	shift_keys(l, r);
+// 	i = 0;
+// 	while (i++ < 16)
+// 	{
+// 		k[i] = uni_permut(((l[i] << 28) | r[i]), g_key_permutation_2, 48, 56);
+// 		// print_b(k[i]);
+// 	}
+// 	// printf("%s | %zu\n | %p\n", line, ft_strlen(line), line);
+// 	m[0] = uni_permut(buf, g_initial_permutation, 64, 64);
+// 	l[0] = (m[0] >> 32);
+// 	r[0] = (m[0] << 32) >> 32;
+// 	i = 0;
+// 	while (++i <= 16)
+// 	{
+// 		l[i] = r[i - 1];
+// 		r[i] = l[i - 1] ^ f(r[i - 1], k[i]);
+// 		// print_b(r[i]);
+// 	}
+// 	// print_b(l[16]);
+// 	// print_b(r[16]);
+// 	i = uni_permut(((r[16] << 32) | l[16]), g_final_permutation, 64, 64);
+// 	// print_b(i);
+// 	// printf("%s\n\n", "1000010111101000000100110101010000001111000010101011010000000101");
+// 	// return (ft_utoa_base(i, 16));
+// 	return (from_digit(i));
+// }

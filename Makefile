@@ -6,7 +6,7 @@
 #    By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/28 19:24:02 by vbrazas           #+#    #+#              #
-#    Updated: 2018/02/21 19:23:05 by vbrazas          ###   ########.fr        #
+#    Updated: 2018/02/22 16:26:18 by vbrazas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,7 +19,6 @@ SRC		=	ft_ssl.c \
 			$(SRC_D)base64.c \
 			$(SRC_D)des.c \
 			$(SRC_D)encrypt_des_ecb.c \
-			$(SRC_D)decrypt_des_ecb.c \
 			$(SRC_D)help.c
 OBJ_D	=	obj/
 OBJ		=	$(addprefix $(OBJ_D), $(SRC:.c=.o))
