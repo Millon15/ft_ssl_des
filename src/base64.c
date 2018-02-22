@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:30:05 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/22 19:12:49 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/22 19:29:10 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ static	unsigned int	find_num(char a)
 	return (i);
 }
 
-static	char			*decrypt_base64(char *line, size_t ln,\
+char					*decrypt_base64(char *line, size_t ln,\
 size_t i, size_t j)
 {
 	unsigned char	res;

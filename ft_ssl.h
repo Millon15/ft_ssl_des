@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:47:17 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/22 18:12:07 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/22 19:29:35 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int					error(int ac, char **av, char *str, int i);
 int					read_args(int ac, char **av, t_fl *fl, int i);
 int					put_base64(char **av, t_fl *fl, ssize_t ret);
 char				*encrypt_base64(char *line, size_t ln, size_t i, size_t j);
+char				*decrypt_base64(char *line, size_t ln, size_t i, size_t j);
 int					put_des_ecb(char **av, t_fl *fl, ssize_t ret);
 char				*encrypt_des_ecb(unsigned long buf, t_fl *fl);
 char				*decrypt_des_ecb(char *line, t_fl *fl);
