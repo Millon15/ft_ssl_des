@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:30:05 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/22 16:42:58 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/22 19:12:49 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,16 +69,16 @@ size_t j)
 	fin = (char *)malloc(sizeof(char) * (ln + ln / 64 + 1));
 	while (i < ln)
 	{
-		res = line[j] >> 2;
+		res = (unsigned char)line[j] >> 2;
 		fin[i++] = st[res];
-		rem = line[j++] << 6;
-		res = (line[j] >> 4) << 2;
-		fin[i++] = st[(res | rem) >> 2];
-		rem = line[j++] << 4;
-		res = (line[j] ? ((line[j] >> 6) << 2) : 0);
+		rem = (unsigned char)line[j++] << 6;
+		res = ((unsigned char)line[j] >> 4) << 2;
+		fin[i++] = st[((res | rem) >> 2)];
+		rem = (unsigned char)line[j++] << 4;
+		res = (line[j] ? (((unsigned char)line[j] >> 6) << 2) : 0);
 		fin[i++] = ((line[j] || res || rem) ? (st[((res | rem) >> 2)]) : '=');
-		rem = (line[j] ? (line[j++] << 2) : 0);
-		fin[i++] = ((line[j] || res || rem) ? (st[rem >> 2]) : '=');
+		rem = (line[j] ? ((unsigned char)line[j++] << 2) : 0);
+		fin[i++] = ((line[j] || res || rem) ? (st[(rem >> 2)]) : '=');
 		if (!(i % 64))
 			fin[i++] = '\n';
 	}

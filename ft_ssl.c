@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 00:39:08 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/01 16:10:15 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/22 18:12:45 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,13 @@ static	void	fill_zeros(t_fl *fl)
 	fl->decrypt = 0;
 	fl->base64 = 0;
 	fl->des_ecb = 0;
+	fl->des_cbc = 0;
 	fl->a = 0;
 	fl->bufs = 0;
 	fl->in = 0;
 	fl->out = 0;
 	fl->k = 0;
+	fl->iv = 0;
 }
 
 static	char	**read_from_stdin(int *ac)

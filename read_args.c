@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:03:55 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/22 16:33:33 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/22 18:12:41 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@ static	int		help_read_args(int ac, char **av, t_fl *fl, int i)
 		return ((fl->base64 = 1));
 	else if (!(ft_strcmp(av[i], "des")) || !(ft_strcmp(av[i], "des-ecb")))
 		return ((fl->des_ecb = 1));
+	else if (!(ft_strcmp(av[i], "des-cbc")))
+		return ((fl->des_cbc = 1));
 	else if (!(ft_strcmp(av[i], "-e")))
 		return ((fl->encrypt = 1));
 	else if (!(ft_strcmp(av[i], "-d")))
@@ -55,6 +57,7 @@ int				read_args(int ac, char **av, t_fl *fl, int i)
 		if ((!(ft_strcmp(av[i], "-in")) || !(ft_strcmp(av[i], "-i")) ||\
 		!(ft_strcmp(av[i], "-out")) || !(ft_strcmp(av[i], "-o")) ||\
 		!(ft_strcmp(av[i], "-k")) || !(ft_strcmp(av[i], "-K")) ||\
+		!(ft_strcmp(av[i], "-iv")) || !(ft_strcmp(av[i], "-v")) ||\
 		!(ft_strcmp(av[i], "-bufsize"))) && !av[i + 1])
 			return ((error(ac, av, (char *)1, i)));
 		else if (!(ft_strcmp(av[i], "-in")) || !(ft_strcmp(av[i], "-i")))
@@ -63,6 +66,8 @@ int				read_args(int ac, char **av, t_fl *fl, int i)
 			fl->out = av[++i];
 		else if (!(ft_strcmp(av[i], "-k")) || !(ft_strcmp(av[i], "-K")))
 			fl->k = av[++i];
+		else if (!(ft_strcmp(av[i], "-iv")) || !(ft_strcmp(av[i], "-v")))
+			fl->iv = av[++i];
 		else if (!(ft_strcmp(av[i], "-bufsize")))
 			fl->bufs = ft_atoi(av[++i]);
 		else if ((help_read_args(ac, av, fl, i)) == -1)
