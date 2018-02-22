@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/22 19:33:24 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/22 21:21:13 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ char					*from_digit(unsigned long res)
 		s[i++] = (res << a) >> 56;
 		a += 8;
 	}
+	s[8] = '\0';
 	return (s);
 }
 
@@ -126,13 +127,14 @@ int						put_des_ecb(char **av, t_fl *fl, ssize_t ret)
 		r[1] = ft_strjoin(r[0], r[1]);
 		free(r[2]);
 	}
-	r[2] = (fl->decrypt ? decrypt_des_ecb(r[1], fl)\
-	: pre_encrypt_des_ecb(r[1], fl));
+	r[2] = (fl->decrypt ? (fl->a ? (decrypt_des_ecb((decrypt_base64(r[1],\
+	ft_strlen(r[1]), 0, 0)), fl)) : (decrypt_des_ecb(r[1], fl))) : \
+	pre_encrypt_des_ecb(r[1], fl));
 	free(r[1]);
-	fl->a ? ft_putendl_fd((r[1] = fl->decrypt ?	(decrypt_base64(r[2]\
-	, ft_strlen(r[2]), 0, 0)) : (encrypt_base64(r[2], ft_strlen(r[2]), 0, 0)))\
-	, k[1])	: ft_putstr_fd(r[2], k[1]);
-	if (fl->a)
+	fl->decrypt ? ft_putstr_fd(r[2], k[1]) : (fl->a ? ft_putendl_fd((r[1] = \
+	(encrypt_base64(r[2], ft_strlen(r[2]), 0, 0))), k[1]) : \
+	ft_putstr_fd(r[2], k[1]));
+	if ((!(fl->decrypt) && fl->a))
 		free(r[1]);
 	free(r[0]);
 	free(r[2]);
