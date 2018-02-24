@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/24 16:37:39 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/24 18:07:40 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,7 +157,7 @@ char					*decrypt_des_ecb(unsigned long buf, t_fl *fl)
 	while (++i <= 16)
 	{
 		l[i] = r[i - 1];
-		r[i] = l[i - 1] ^ f(r[i - 1], k[i]);
+		r[i] = l[i - 1] ^ f(r[i - 1], k[17 - i]);
 		// print_b(r[i]);
 	}
 	// print_b(l[16]);
