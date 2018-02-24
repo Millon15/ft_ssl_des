@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/22 21:21:13 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/24 17:07:14 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ static	unsigned long	to_digit(char *s)
 		res |= (s[i] ? s[i++] : k);
 		l++;
 	}
-	// printf("%s ", ft_utoa_base(res, 16));
 	return (res);
 }
 
@@ -41,7 +40,6 @@ char					*from_digit(unsigned long res)
 	int		a;
 	int		i;
 
-	// printf("%s ", ft_utoa_base(res, 16));
 	s = (char *)malloc(sizeof(char) * 9);
 	i = 0;
 	a = 0;
@@ -54,32 +52,31 @@ char					*from_digit(unsigned long res)
 	return (s);
 }
 
-// static	char			*pre_decrypt_des_ecb(char *line, t_fl *fl)
-// {
-// 	char		*line2;
-// 	char		*line2_buf;
-// 	char		*buf;
-// 	int			l;
-// 	int			i;
+static	char			*pre_decrypt_des_ecb(char *line, t_fl *fl)
+{
+	char		*line2;
+	char		*line2_buf;
+	char		*buf;
+	int			l;
+	int			i;
 
-// 	l = ft_strlen(line);
-// 	l = !(l % 8) ? (l + 8) : l;
-// 	line2 = (char *)malloc(sizeof(char) * (l + 1));
-// 	line2[l] = '\0';
-// 	line2 = decrypt_des_ecb(to_digit(line), fl);
-// 	i = 8;
-// 	while ((l - i) > 0)
-// 	{
-// 		buf = decrypt_des_ecb(to_digit(line + i), fl);
-// 		line2_buf = line2;
-// 		line2 = ft_strjoin(line2, buf);
-// 		free(line2_buf);
-// 		free(buf);
-// 		i += 8;
-// 	}
-// 	// printf("\n\n");
-// 	return (line2);
-// }
+	l = ft_strlen(line);
+	l = !(l % 8) ? (l + 8) : l;
+	line2 = (char *)malloc(sizeof(char) * (l + 1));
+	line2[l] = '\0';
+	line2 = decrypt_des_ecb(to_digit(line), fl);
+	i = 8;
+	while ((l - i) > 0)
+	{
+		buf = decrypt_des_ecb(to_digit(line + i), fl);
+		line2_buf = line2;
+		line2 = ft_strjoin(line2, buf);
+		free(line2_buf);
+		free(buf);
+		i += 8;
+	}
+	return (line2);
+}
 
 static	char			*pre_encrypt_des_ecb(char *line, t_fl *fl)
 {
@@ -104,7 +101,6 @@ static	char			*pre_encrypt_des_ecb(char *line, t_fl *fl)
 		free(buf);
 		i += 8;
 	}
-	// printf("\n\n");
 	return (line2);
 }
 
@@ -120,15 +116,16 @@ int						put_des_ecb(char **av, t_fl *fl, ssize_t ret)
 	k[2] = (fl->bufs ? fl->bufs : BUFF_SIZE);
 	r[0] = (char *)malloc(sizeof(char) * (k[2] + 1));
 	r[1] = (char *)ft_memalloc(sizeof(char) * 1);
+	r[1][0] = '\0';
 	while ((ret = read(k[0], r[0], k[2])))
 	{
 		r[0][ret] = '\0';
 		r[2] = r[1];
-		r[1] = ft_strjoin(r[0], r[1]);
+		r[1] = ft_strjoin(r[1], r[0]);
 		free(r[2]);
 	}
-	r[2] = (fl->decrypt ? (fl->a ? (decrypt_des_ecb((decrypt_base64(r[1],\
-	ft_strlen(r[1]), 0, 0)), fl)) : (decrypt_des_ecb(r[1], fl))) : \
+	r[2] = (fl->decrypt ? (fl->a ? (pre_decrypt_des_ecb((decrypt_base64(r[1],\
+	ft_strlen(r[1]), 0, 0)), fl)) : (pre_decrypt_des_ecb(r[1], fl))) : \
 	pre_encrypt_des_ecb(r[1], fl));
 	free(r[1]);
 	fl->decrypt ? ft_putstr_fd(r[2], k[1]) : (fl->a ? ft_putendl_fd((r[1] = \
