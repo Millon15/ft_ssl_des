@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/24 21:33:50 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/24 21:39:53 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,7 +128,7 @@ int						put_des_ecb(char **av, t_fl *fl, ssize_t ret)
 		r[2] = pre_endecrypt_des_ecb(r[1], l, fl);
 	free(r[1]);
 	if (fl->decrypt)
-		write(k[1], r[2], l);
+		fl->a ? write(k[1], r[2], l / 3 * 4) : write(k[1], r[2], l);
 	else
 		fl->a ? ft_putendl_fd((r[1] = (encrypt_base64(r[2], ft_strlen(r[2])\
 		, 0, 0))), k[1]) : ft_putstr_fd(r[2], k[1]);
