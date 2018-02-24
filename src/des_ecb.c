@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/24 19:06:29 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/24 20:42:41 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ static	unsigned long	f(unsigned long text, unsigned long ki)
 	int					c;
 
 	res[0] = uni_permut(text, g_expand_permutation, 48, 32);
-	res[0] = (ki ^ res[0]) << 16;
+	res[0] = (res[0] ^ ki) << 16;
 	// print_b(res[0]);
 	// printf("\n%s\n\n", "011000010001011110111010100001100110010100100111");
 	a = -1;
@@ -74,7 +74,7 @@ static	unsigned long	f(unsigned long text, unsigned long ki)
 		// print_b(b);
 		// print_b(c);
 		// printf("\n\n");
-		res[1] |= g_sboxes[a][b][c] << (4 * (-a + 7));
+		res[1] |= (g_sboxes[a][b][c] << (4 * (7 - a)));
 		// print_b(res[1]);
 	}
 	// print_b(res[1]);
@@ -114,7 +114,7 @@ char					*endecrypt_des_ecb(unsigned long buf, t_fl *fl)
 	while (++i <= 16)
 	{
 		l[i] = r[i - 1];
-		r[i] = l[i - 1] ^ f(r[i - 1], k[(fl->decrypt ? 17 : (2 * i)) - i]);
+		r[i] = l[i - 1] ^ f(r[i - 1], k[(fl->decrypt ? (17 - i) : i)]);
 		// print_b(r[i]);
 	}
 	// print_b(l[16]);
