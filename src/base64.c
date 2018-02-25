@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:30:05 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/25 21:02:09 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/25 21:05:07 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ size_t j)
 		fin[i++] = st[((res | rem) >> 2)];
 		rem = (unsigned char)line[j++] << 4;
 		res = (line[j] ? (((unsigned char)line[j] >> 6) << 2) : 0);
-		fin[i++] = (res || rem || tmp) ? (st[((res | rem) >> 2)]) : '=';
+		fin[i++] = (res || rem || tmp[0]) ? (st[((res | rem) >> 2)]) : '=';
 		rem = (line[j] ? ((unsigned char)line[j++] << 2) : 0);
 		fin[i++] = (res || rem) ? (st[(rem >> 2)]) : '=';
 		if (!((i - tmp[1]) % 64) && ++tmp[1])
