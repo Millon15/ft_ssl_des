@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 00:39:08 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/22 18:12:45 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/25 18:54:15 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,14 +50,14 @@ static	char	**read_from_stdin(int *ac)
 	return (av);
 }
 
-static	void	ac1(int ac, char **av, t_fl *fl)
+static	void	stdin_reading(int ac, char **av, t_fl *fl)
 {
 	while (1)
 	{
 		write(1, "ft_SSL> ", 8);
 		fill_zeros(fl);
 		av = read_from_stdin(&ac);
-		if ((read_args(ac, av, fl, -1)) != -1)
+		if ((read_command(ac, av, fl, 0)) != -1)
 			return ;
 	}
 }
@@ -69,9 +69,9 @@ int				main(int ac, char **av)
 	fl = (t_fl *)malloc(sizeof(t_fl));
 	fill_zeros(fl);
 	if (ac == 1)
-		ac1(ac, av, fl);
+		stdin_reading(ac, av, fl);
 	else
-		read_args(ac, av, fl, 0);
+		read_command(ac, av, fl, 1);
 	free(fl);
 	return (0);
 }

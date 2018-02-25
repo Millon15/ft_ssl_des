@@ -6,12 +6,30 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/24 20:42:41 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/25 20:29:52 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_ssl.h"
 #include "permutations.h"
+
+static	char			*from_digit(unsigned long res)
+{
+	char	*s;
+	int		a;
+	int		i;
+
+	s = (char *)malloc(sizeof(char) * 9);
+	i = 0;
+	a = 0;
+	while (a != 64)
+	{
+		s[i++] = (res << a) >> 56;
+		a += 8;
+	}
+	s[8] = '\0';
+	return (s);
+}
 
 static	void			shift_keys(unsigned long c[], unsigned long d[])
 {
@@ -83,7 +101,8 @@ static	unsigned long	f(unsigned long text, unsigned long ki)
 	return (res[0]);
 }
 
-char					*endecrypt_des_ecb(unsigned long buf, t_fl *fl)
+char					*endecrypt_des(unsigned long buf, char *key, \
+unsigned int decrypt)
 {
 	unsigned long		i;
 	unsigned long		m[17];
@@ -91,10 +110,10 @@ char					*endecrypt_des_ecb(unsigned long buf, t_fl *fl)
 	unsigned long		l[17];
 	unsigned long		r[17];
 
-	// printf("key = %lu\n", ft_atou_base(fl->k, 16));
-	// print_b(ft_atou_base(fl->k, 16));
+	// printf("key = %lu\n", ft_atou_base(key, 16));
+	// print_b(ft_atou_base(key, 16));
 	// printf("%s\n\n", "0001001100110100010101110111100110011011101111001101111111110001");
-	k[0] = uni_permut(ft_atou_base(fl->k, 16), g_key_permutation_1, 56, 64);
+	k[0] = uni_permut(ft_atou_base(key, 16), g_key_permutation_1, 56, 64);
 	// print_b(k[0]);
 	// printf("%s\n\n", "00000000""11110000110011001010101011110101010101100110011110001111");
 	l[0] = (k[0] >> 28);
@@ -114,7 +133,7 @@ char					*endecrypt_des_ecb(unsigned long buf, t_fl *fl)
 	while (++i <= 16)
 	{
 		l[i] = r[i - 1];
-		r[i] = l[i - 1] ^ f(r[i - 1], k[(fl->decrypt ? (17 - i) : i)]);
+		r[i] = l[i - 1] ^ f(r[i - 1], k[(decrypt ? (17 - i) : i)]);
 		// print_b(r[i]);
 	}
 	// print_b(l[16]);

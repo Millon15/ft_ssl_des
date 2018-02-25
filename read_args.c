@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:03:55 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/22 18:12:41 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/25 18:53:25 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,13 @@ static	int		help_check_args(int ac, char **av, t_fl *fl, int i_buf)
 {
 	if (!(fl->k) && fl->des_ecb)
 		return ((error(3, av, (char *)2, i_buf)));
-	if ((put_endres(av, fl)) == -1)
-		return ((error(2, av, NULL, i_buf)));
+	put_endres(av, fl);
 	return (0);
 }
 
 static	int		help_read_args(int ac, char **av, t_fl *fl, int i)
 {
-	if (!(ft_strcmp(av[i], "base64")))
-		return ((fl->base64 = 1));
-	else if (!(ft_strcmp(av[i], "des")) || !(ft_strcmp(av[i], "des-ecb")))
-		return ((fl->des_ecb = 1));
-	else if (!(ft_strcmp(av[i], "des-cbc")))
-		return ((fl->des_cbc = 1));
-	else if (!(ft_strcmp(av[i], "-e")))
+	if (!(ft_strcmp(av[i], "-e")))
 		return ((fl->encrypt = 1));
 	else if (!(ft_strcmp(av[i], "-d")))
 		return ((fl->decrypt = 1));
@@ -47,11 +40,11 @@ static	int		help_read_args(int ac, char **av, t_fl *fl, int i)
 	return (-1);
 }
 
-int				read_args(int ac, char **av, t_fl *fl, int i)
+static	int				read_args(int ac, char **av, t_fl *fl, int i)
 {
 	int		i_buf;
 
-	i_buf = i + 1;
+	i_buf = i;
 	while (av[++i])
 	{
 		if ((!(ft_strcmp(av[i], "-in")) || !(ft_strcmp(av[i], "-i")) ||\
@@ -74,4 +67,17 @@ int				read_args(int ac, char **av, t_fl *fl, int i)
 			return ((error(ac, av, NULL, i)));
 	}
 	return (help_check_args(ac, av, fl, i_buf));
+}
+
+int						read_command(int ac, char **av, t_fl *fl, int i)
+{
+	if (!(ft_strcmp(av[i], "base64")))
+		fl->base64 = 1;
+	else if (!(ft_strcmp(av[i], "des")) || !(ft_strcmp(av[i], "des-ecb")))
+		fl->des_ecb = 1;
+	else if (!(ft_strcmp(av[i], "des-cbc")))
+		fl->des_cbc = 1;
+	else
+		return ((error(2, av, NULL, i)));
+	return (read_args(ac, av, fl, i));
 }
