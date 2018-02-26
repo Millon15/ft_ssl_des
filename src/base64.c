@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:30:05 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/25 21:05:07 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/26 15:24:36 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,8 @@ static	unsigned int	find_num(char a)
 	return (i);
 }
 
-char					*decrypt_base64(char *line, size_t ln,\
-size_t i, size_t j)
+char					*decrypt_base64(char *line, size_t ln, \
+						size_t i, size_t j)
 {
 	unsigned char	res;
 	unsigned char	rem;
@@ -55,8 +55,8 @@ size_t i, size_t j)
 	return (fin);
 }
 
-char					*encrypt_base64(char *line, size_t ln, size_t i,\
-size_t j)
+char					*encrypt_base64(char *line, size_t ln, size_t i, \
+						size_t j)
 {
 	unsigned char	res;
 	unsigned char	rem;
