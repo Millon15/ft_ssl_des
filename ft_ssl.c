@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 00:39:08 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/25 18:54:15 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/26 16:05:53 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,8 @@ static	void	fill_zeros(t_fl *fl)
 	fl->bufs = 0;
 	fl->in = 0;
 	fl->out = 0;
-	fl->k = 0;
-	fl->iv = 0;
+	ft_bzero(fl->k, 17);
+	ft_bzero(fl->iv, 17);
 }
 
 static	char	**read_from_stdin(int *ac)

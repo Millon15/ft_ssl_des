@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   des.c                                              :+:      :+:    :+:   */
+/*   put_des.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/25 20:30:25 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/26 16:05:31 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,29 +34,32 @@ static	unsigned long	to_digit(unsigned char *s)
 	return (res);
 }
 
-static	void			fix_num(t_fl *fl)
+static	void			fix_num(char k[])
 {
-	char	*res;
+	char	res[17];
 	int		len;
 	int		i;
 
-	len = ft_strlen(fl->k);
+	len = ft_strlen(k);
 	if (len > 16)
-		res = ft_strsub(fl->k, 0, 16);
+	{
+		i = -1;
+		while (++i < 16)
+			res[i] = k[i];
+	}
 	else
 	{
 		i = -1;
-		res = (char *)malloc(sizeof(char) * 17);
 		while (++i < len)
-			res[i] = (fl->k)[i];
+			res[i] = k[i];
 		while (i < 16)
 			res[i++] = '0';
-		res[i] = '\0';
 	}
-	fl->k = res;
+	res[i] = '\0';
+	ft_memcpy(k, res, 17);
 }
 
-static	char			*pre_endecrypt_des_ecb(char *line, ssize_t l, t_fl *fl)
+static	char			*pre_endecrypt_des(char *line, ssize_t l, t_fl *fl)
 {
 	char		*line2;
 	char		*line2_buf;
@@ -64,7 +67,9 @@ static	char			*pre_endecrypt_des_ecb(char *line, ssize_t l, t_fl *fl)
 	int			i;
 
 	if (ft_strlen(fl->k) != 16)
-		fix_num(fl);
+		fix_num(fl->k);
+	if (fl->des_cbc && ft_strlen(fl->iv) != 16)
+		fix_num(fl->iv);
 	l = !(l % 8) ? (l + 8) : l;
 	line2 = endecrypt_des(to_digit((unsigned char *)line), fl->k, fl->decrypt);
 	i = 8;
@@ -80,13 +85,13 @@ static	char			*pre_endecrypt_des_ecb(char *line, ssize_t l, t_fl *fl)
 	return (line2);
 }
 
-static	int				help_put_des_ecb(char *r[], int k[], ssize_t l, t_fl *fl)
+static	int				help_put_des(char *r[], int k[], ssize_t l, t_fl *fl)
 {
 	if (fl->decrypt)
-		r[2] = fl->a ? (pre_endecrypt_des_ecb((decrypt_base64(r[1], ft_strlen(\
-		r[1]), 0, 0)), l, fl)) : (pre_endecrypt_des_ecb(r[1], l, fl));
+		r[2] = fl->a ? (pre_endecrypt_des((decrypt_base64(r[1], ft_strlen(\
+		r[1]), 0, 0)), l, fl)) : (pre_endecrypt_des(r[1], l, fl));
 	else
-		r[2] = pre_endecrypt_des_ecb(r[1], l, fl);
+		r[2] = pre_endecrypt_des(r[1], l, fl);
 	free(r[1]);
 	if (fl->decrypt)
 		fl->a ? write(k[1], r[2], l / 3 * 4) : write(k[1], r[2], l);
@@ -100,7 +105,7 @@ static	int				help_put_des_ecb(char *r[], int k[], ssize_t l, t_fl *fl)
 	return (0);
 }
 
-int						put_des_ecb(char **av, t_fl *fl, ssize_t ret)
+int						put_des(char **av, t_fl *fl, ssize_t ret)
 {
 	char		*r[3];
 	int			k[3];
@@ -123,5 +128,5 @@ int						put_des_ecb(char **av, t_fl *fl, ssize_t ret)
 		free(r[2]);
 		l += ret;
 	}
-	return (help_put_des_ecb(r, k, l, fl));
+	return (help_put_des(r, k, l, fl));
 }

@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:03:55 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/25 18:53:25 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/26 17:54:00 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,14 +17,29 @@ static	int		put_endres(char **av, t_fl *fl)
 	if (fl->base64)
 		return (put_base64(av, fl, 0));
 	else if (fl->des_ecb)
-		return (put_des_ecb(av, fl, 0));
+		return (put_des(av, fl, 0));
 	return (-1);
 }
 
-static	int		help_check_args(int ac, char **av, t_fl *fl, int i_buf)
+static	int		check_args(int ac, char **av, t_fl *fl, int i_buf)
 {
-	if (!(fl->k) && fl->des_ecb)
-		return ((error(3, av, (char *)2, i_buf)));
+	char		buf[17];
+	ssize_t		ret;
+
+	if (!((fl->k)[0]) && fl->des_ecb)
+	{
+		ft_putstr("enter des-ecb encryption key: ");
+		read(0, fl->k, 16);
+		ft_putstr("Verifying - enter des-ecb encryption key: ");
+		ret = read(0, buf, 16);
+		buf[ret] = '\0';
+		if (ft_strncmp(fl->k, buf, 16))
+			return ((error(99, av, NULL, i_buf)));
+		ret = 0;
+		while (!(ft_iswhitespace((fl->k)[ret])))
+			ret++;
+		(fl->k)[ret] = '\0';
+	}
 	put_endres(av, fl);
 	return (0);
 }
@@ -40,7 +55,7 @@ static	int		help_read_args(int ac, char **av, t_fl *fl, int i)
 	return (-1);
 }
 
-static	int				read_args(int ac, char **av, t_fl *fl, int i)
+static	int		read_args(int ac, char **av, t_fl *fl, int i)
 {
 	int		i_buf;
 
@@ -58,18 +73,18 @@ static	int				read_args(int ac, char **av, t_fl *fl, int i)
 		else if (!(ft_strcmp(av[i], "-out")) || !(ft_strcmp(av[i], "-o")))
 			fl->out = av[++i];
 		else if (!(ft_strcmp(av[i], "-k")) || !(ft_strcmp(av[i], "-K")))
-			fl->k = av[++i];
+			ft_memcpy(fl->k, av[++i], 16);
 		else if (!(ft_strcmp(av[i], "-iv")) || !(ft_strcmp(av[i], "-v")))
-			fl->iv = av[++i];
+			ft_memcpy(fl->iv, av[++i], 16);
 		else if (!(ft_strcmp(av[i], "-bufsize")))
 			fl->bufs = ft_atoi(av[++i]);
 		else if ((help_read_args(ac, av, fl, i)) == -1)
 			return ((error(ac, av, NULL, i)));
 	}
-	return (help_check_args(ac, av, fl, i_buf));
+	return (check_args(ac, av, fl, i_buf));
 }
 
-int						read_command(int ac, char **av, t_fl *fl, int i)
+int				read_command(int ac, char **av, t_fl *fl, int i)
 {
 	if (!(ft_strcmp(av[i], "base64")))
 		fl->base64 = 1;

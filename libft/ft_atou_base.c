@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 20:18:32 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/21 17:00:35 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/26 16:28:42 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,5 +45,6 @@ unsigned long		ft_atou_base(const char *s, int base)
 			i[2]++;
 		res += i[2] * (!(i[1] - i[0]) ? 1 : (ft_pow(base, i[1] - i[0])));
 	}
+	free(buf);
 	return ((res * i[3]));
 }

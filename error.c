@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 20:09:45 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/07 23:22:48 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/26 16:21:27 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static	void	help(int ac, char **av, char *str, int i)
 {
-	if (ac > 2)
+	if (ac > 2 && ac != 99)
 	{
 		if (!str)
 			ft_putstr("unknown option '");
@@ -52,6 +52,8 @@ int				error(int ac, char **av, char *str, int i)
 		"Message Digest commands:\n\nCipher commands:\nbase64\n"
 		"des\ndes-ecb\ndes-cbc\n");
 	}
+	else if (ac == 99)
+		ft_putstr("Verify failure\nbad password read\n");
 	else
 		help(ac, av, str, i);
 	return (-1);
