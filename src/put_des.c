@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/26 16:05:31 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/27 14:45:35 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,14 +68,16 @@ static	char			*pre_endecrypt_des(char *line, ssize_t l, t_fl *fl)
 
 	if (ft_strlen(fl->k) != 16)
 		fix_num(fl->k);
-	if (fl->des_cbc && ft_strlen(fl->iv) != 16)
-		fix_num(fl->iv);
+	if (fl->des_cbc && ft_strlen(fl->iv_buf) != 16)
+		fix_num(fl->iv_buf);
+	fl->iv = ft_atou_base(fl->iv_buf, 16);
+	fl->encrypt = !(fl->decrypt) ? 1 : 0;
 	l = !(l % 8) ? (l + 8) : l;
-	line2 = endecrypt_des(to_digit((unsigned char *)line), fl->k, fl->decrypt);
+	line2 = endecrypt_des(to_digit((unsigned char *)line), fl);
 	i = 8;
 	while ((l - i) > 0)
 	{
-		buf = endecrypt_des(to_digit((unsigned char *)line + i), fl->k, fl->decrypt);
+		buf = endecrypt_des(to_digit((unsigned char *)line + i), fl);
 		line2_buf = line2;
 		line2 = ft_strjoin(line2, buf);
 		free(line2_buf);

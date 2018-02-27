@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:03:55 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/26 17:54:00 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/27 14:31:45 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static	int		put_endres(char **av, t_fl *fl)
 {
 	if (fl->base64)
 		return (put_base64(av, fl, 0));
-	else if (fl->des_ecb)
+	else if (fl->des_ecb || fl->des_cbc)
 		return (put_des(av, fl, 0));
 	return (-1);
 }
@@ -75,7 +75,7 @@ static	int		read_args(int ac, char **av, t_fl *fl, int i)
 		else if (!(ft_strcmp(av[i], "-k")) || !(ft_strcmp(av[i], "-K")))
 			ft_memcpy(fl->k, av[++i], 16);
 		else if (!(ft_strcmp(av[i], "-iv")) || !(ft_strcmp(av[i], "-v")))
-			ft_memcpy(fl->iv, av[++i], 16);
+			ft_memcpy(fl->iv_buf, av[++i], 16);
 		else if (!(ft_strcmp(av[i], "-bufsize")))
 			fl->bufs = ft_atoi(av[++i]);
 		else if ((help_read_args(ac, av, fl, i)) == -1)
