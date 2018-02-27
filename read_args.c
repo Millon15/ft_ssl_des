@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:03:55 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/27 14:31:45 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/27 21:41:52 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,23 @@
 
 static	int		put_endres(char **av, t_fl *fl)
 {
+	char		buf[17];
+	ssize_t		ret;
+
+	if (!((fl->iv_buf)[0]) && fl->des_cbc)
+	{
+		ft_putstr("enter des-cbc initial vector: ");
+		read(0, fl->iv_buf, 17);
+		ft_putstr("Verifying - enter des-cbc initial vector: ");
+		ret = read(0, buf, 17);
+		buf[ret] = '\0';
+		if (ft_strncmp(fl->iv_buf, buf, 17))
+			return ((error(99, av, NULL, 0)));
+		ret = 0;
+		while (!(ft_iswhitespace((fl->iv_buf)[ret])))
+			ret++;
+		(fl->iv_buf)[ret] = '\0';
+	}
 	if (fl->base64)
 		return (put_base64(av, fl, 0));
 	else if (fl->des_ecb || fl->des_cbc)
@@ -21,20 +38,20 @@ static	int		put_endres(char **av, t_fl *fl)
 	return (-1);
 }
 
-static	int		check_args(int ac, char **av, t_fl *fl, int i_buf)
+static	int		check_args(int ac, char **av, t_fl *fl)
 {
 	char		buf[17];
 	ssize_t		ret;
 
-	if (!((fl->k)[0]) && fl->des_ecb)
+	if (!((fl->k)[0]) && (fl->des_ecb || fl->des_cbc))
 	{
 		ft_putstr("enter des-ecb encryption key: ");
-		read(0, fl->k, 16);
+		read(0, fl->k, 17);
 		ft_putstr("Verifying - enter des-ecb encryption key: ");
-		ret = read(0, buf, 16);
+		ret = read(0, buf, 17);
 		buf[ret] = '\0';
-		if (ft_strncmp(fl->k, buf, 16))
-			return ((error(99, av, NULL, i_buf)));
+		if (ft_strncmp(fl->k, buf, 17))
+			return ((error(99, av, NULL, 0)));
 		ret = 0;
 		while (!(ft_iswhitespace((fl->k)[ret])))
 			ret++;
@@ -81,7 +98,7 @@ static	int		read_args(int ac, char **av, t_fl *fl, int i)
 		else if ((help_read_args(ac, av, fl, i)) == -1)
 			return ((error(ac, av, NULL, i)));
 	}
-	return (check_args(ac, av, fl, i_buf));
+	return (check_args(ac, av, fl));
 }
 
 int				read_command(int ac, char **av, t_fl *fl, int i)
