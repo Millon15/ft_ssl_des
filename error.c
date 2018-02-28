@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 20:09:45 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/27 14:51:25 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/28 15:38:24 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,6 @@ static	void	help(int ac, char **av, char *str, int i)
 			ft_putstr("unknown option '");
 		else if ((unsigned long)str == 1)
 			ft_putstr("missing file argument for '");
-		else if ((unsigned long)str == 2)
-			ft_putstr("missing '-k' argument for '");
 		if ((unsigned long)str == 2 || (unsigned long)str == 1 || !str)
 			ft_putstr(av[i]);
 		ft_putstr("'\nusage: ft_ssl command [command opts] [command args]\n\n"
@@ -52,7 +50,7 @@ int				error(int ac, char **av, char *str, int i)
 		"Message Digest commands:\n\nCipher commands:\nbase64\n"
 		"des\ndes-ecb\ndes-cbc\n");
 	}
-	else if (ac == 99)
+	else if (ac == -2)
 		ft_putstr("Verify failure\nbad input read\n");
 	else
 		help(ac, av, str, i);

@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:03:55 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/27 21:41:52 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/28 16:23:36 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,19 +17,16 @@ static	int		put_endres(char **av, t_fl *fl)
 	char		buf[17];
 	ssize_t		ret;
 
-	if (!((fl->iv_buf)[0]) && fl->des_cbc)
+	if (!((fl->iv_buf)[0]) && (fl->des_cbc || fl->des3))
 	{
-		ft_putstr("enter des-cbc initial vector: ");
-		read(0, fl->iv_buf, 17);
-		ft_putstr("Verifying - enter des-cbc initial vector: ");
+		ft_putstr("enter des initial vector: ");
+		ret = read(0, fl->iv_buf, 17);
+		(fl->iv_buf)[ret - 1] = '\0';
+		ft_putstr("Verifying - enter again des initial vector: ");
 		ret = read(0, buf, 17);
-		buf[ret] = '\0';
+		buf[ret - 1] = '\0';
 		if (ft_strncmp(fl->iv_buf, buf, 17))
-			return ((error(99, av, NULL, 0)));
-		ret = 0;
-		while (!(ft_iswhitespace((fl->iv_buf)[ret])))
-			ret++;
-		(fl->iv_buf)[ret] = '\0';
+			return ((error(-2, av, NULL, 0)));
 	}
 	if (fl->base64)
 		return (put_base64(av, fl, 0));
@@ -43,19 +40,16 @@ static	int		check_args(int ac, char **av, t_fl *fl)
 	char		buf[17];
 	ssize_t		ret;
 
-	if (!((fl->k)[0]) && (fl->des_ecb || fl->des_cbc))
+	while ((!((fl->k)[0]) && (fl->des_ecb || fl->des_cbc || fl->des3)))
 	{
-		ft_putstr("enter des-ecb encryption key: ");
-		read(0, fl->k, 17);
-		ft_putstr("Verifying - enter des-ecb encryption key: ");
-		ret = read(0, buf, 17);
-		buf[ret] = '\0';
-		if (ft_strncmp(fl->k, buf, 17))
-			return ((error(99, av, NULL, 0)));
-		ret = 0;
-		while (!(ft_iswhitespace((fl->k)[ret])))
-			ret++;
-		(fl->k)[ret] = '\0';
+		ft_putstr("enter des encryption key: ");
+		ret = read(0, fl->k, (fl->des3 ? 49 : 17));
+		(fl->k)[ret - 1] = '\0';
+		ft_putstr("Verifying - enter again des encryption key: ");
+		ret = read(0, buf, (fl->des3 ? 49 : 17));
+		buf[ret - 1] = '\0';
+		if (ft_strncmp(fl->k, buf, (fl->des3 ? 49 : 17)))
+			return ((error(-2, av, NULL, 0)));
 	}
 	put_endres(av, fl);
 	return (0);
@@ -67,7 +61,9 @@ static	int		help_read_args(int ac, char **av, t_fl *fl, int i)
 		return ((fl->encrypt = 1));
 	else if (!(ft_strcmp(av[i], "-d")))
 		return ((fl->decrypt = 1));
-	else if (!(ft_strcmp(av[i], "-a")))
+	else if (!(ft_strcmp(av[i], "-bufsize")))
+		fl->bufs = ft_atoi(av[++i]);
+	else if (!(ft_strcmp(av[i], "-a")) || !(ft_strcmp(av[i], "-base64")))
 		return ((fl->a = 1));
 	return (-1);
 }
@@ -90,11 +86,9 @@ static	int		read_args(int ac, char **av, t_fl *fl, int i)
 		else if (!(ft_strcmp(av[i], "-out")) || !(ft_strcmp(av[i], "-o")))
 			fl->out = av[++i];
 		else if (!(ft_strcmp(av[i], "-k")) || !(ft_strcmp(av[i], "-K")))
-			ft_memcpy(fl->k, av[++i], 16);
+			ft_strncpy(fl->k, av[++i], (fl->des3 ? 48 : 16));
 		else if (!(ft_strcmp(av[i], "-iv")) || !(ft_strcmp(av[i], "-v")))
-			ft_memcpy(fl->iv_buf, av[++i], 16);
-		else if (!(ft_strcmp(av[i], "-bufsize")))
-			fl->bufs = ft_atoi(av[++i]);
+			ft_strncpy(fl->iv_buf, av[++i], 16);
 		else if ((help_read_args(ac, av, fl, i)) == -1)
 			return ((error(ac, av, NULL, i)));
 	}
@@ -109,7 +103,10 @@ int				read_command(int ac, char **av, t_fl *fl, int i)
 		fl->des_ecb = 1;
 	else if (!(ft_strcmp(av[i], "des-cbc")))
 		fl->des_cbc = 1;
+	else if (!(ft_strcmp(av[i], "des3")))
+		fl->des3 = 1;
 	else
 		return ((error(2, av, NULL, i)));
 	return (read_args(ac, av, fl, i));
 }
+	

@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/27 14:45:35 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/28 16:23:10 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,17 @@ static	unsigned long	to_digit(unsigned char *s)
 	return (res);
 }
 
-static	void			fix_num(char k[])
+static	void			fix_num(char k[], t_fl *fl)
 {
-	char	res[17];
+	char	res[49];
 	int		len;
 	int		i;
 
 	len = ft_strlen(k);
-	if (len > 16)
+	if (len > (fl->des3 ? 48 : 16))
 	{
 		i = -1;
-		while (++i < 16)
+		while (++i < (fl->des3 ? 48 : 16))
 			res[i] = k[i];
 	}
 	else
@@ -52,11 +52,11 @@ static	void			fix_num(char k[])
 		i = -1;
 		while (++i < len)
 			res[i] = k[i];
-		while (i < 16)
+		while (i < (fl->des3 ? 48 : 16))
 			res[i++] = '0';
 	}
 	res[i] = '\0';
-	ft_memcpy(k, res, 17);
+	ft_memcpy(k, res, (fl->des3 ? 49 : 17));
 }
 
 static	char			*pre_endecrypt_des(char *line, ssize_t l, t_fl *fl)
@@ -66,12 +66,11 @@ static	char			*pre_endecrypt_des(char *line, ssize_t l, t_fl *fl)
 	char		*buf;
 	int			i;
 
-	if (ft_strlen(fl->k) != 16)
-		fix_num(fl->k);
+	if (ft_strlen(fl->k) != (fl->des3 ? 48 : 16))
+		fix_num(fl->k, fl);
 	if (fl->des_cbc && ft_strlen(fl->iv_buf) != 16)
-		fix_num(fl->iv_buf);
+		fix_num(fl->iv_buf, fl);
 	fl->iv = ft_atou_base(fl->iv_buf, 16);
-	fl->encrypt = !(fl->decrypt) ? 1 : 0;
 	l = !(l % 8) ? (l + 8) : l;
 	line2 = endecrypt_des(to_digit((unsigned char *)line), fl);
 	i = 8;
@@ -89,12 +88,15 @@ static	char			*pre_endecrypt_des(char *line, ssize_t l, t_fl *fl)
 
 static	int				help_put_des(char *r[], int k[], ssize_t l, t_fl *fl)
 {
+	free(r[0]);
 	if (fl->decrypt)
-		r[2] = fl->a ? (pre_endecrypt_des((decrypt_base64(r[1], ft_strlen(\
-		r[1]), 0, 0)), l, fl)) : (pre_endecrypt_des(r[1], l, fl));
+		r[2] = (fl->a ? (pre_endecrypt_des(((r[0] = decrypt_base64(r[1], ft_strlen(\
+		r[1]), 0, 0))), l, fl)) : (pre_endecrypt_des(r[1], l, fl)));
 	else
 		r[2] = pre_endecrypt_des(r[1], l, fl);
 	free(r[1]);
+	if ((fl->decrypt && fl->a))
+		free(r[0]);
 	if (fl->decrypt)
 		fl->a ? write(k[1], r[2], l / 3 * 4) : write(k[1], r[2], l);
 	else
@@ -102,7 +104,6 @@ static	int				help_put_des(char *r[], int k[], ssize_t l, t_fl *fl)
 		, 0, 0))), k[1]) : ft_putstr_fd(r[2], k[1]);
 	if ((!(fl->decrypt) && fl->a))
 		free(r[1]);
-	free(r[0]);
 	free(r[2]);
 	return (0);
 }
