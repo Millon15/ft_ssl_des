@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/28 17:10:26 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/28 22:40:14 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,17 +34,17 @@ static	unsigned long	to_digit(unsigned char *s)
 	return (res);
 }
 
-static	void			fix_num(char k[], t_fl *fl)
+static	void			fix_num(char k[], t_fl *fl, int l)
 {
 	char	res[49];
 	int		len;
 	int		i;
 
 	len = ft_strlen(k);
-	if (len > (fl->des3 ? 48 : 16))
+	if (len > l)
 	{
 		i = -1;
-		while (++i < (fl->des3 ? 48 : 16))
+		while (++i < l)
 			res[i] = k[i];
 	}
 	else
@@ -52,17 +52,19 @@ static	void			fix_num(char k[], t_fl *fl)
 		i = -1;
 		while (++i < len)
 			res[i] = k[i];
-		while (i < (fl->des3 ? 48 : 16))
+		while (i < l)
 			res[i++] = '0';
 	}
 	res[i] = '\0';
-	ft_memcpy(k, res, (fl->des3 ? 49 : 17));
+	ft_strncpy(k, res, (l + 1));
 }
 
-char					*des3_algorythm(char *line, ssize_t l, t_fl *fl)
+static	char			*pre_endecrypt_des(char *line, ssize_t l, t_fl *fl);
+
+static	char			*des3_algorythm(char *line, ssize_t l, t_fl *fl)
 {
-	char		*line2;
-	char		*buf;
+	char		*line3;
+	char		**res;
 	char		k[3][17];
 	int			i;
 
@@ -73,8 +75,20 @@ char					*des3_algorythm(char *line, ssize_t l, t_fl *fl)
 		k[(i / 16)][16] = '\0';
 		i += 16;
 	}
-	
-	return (line2);
+	fl->des3 = 0;
+	// fl->des_cbc = 1;
+	res = (char **)malloc(sizeof(char *) * 3);
+	ft_strcpy(fl->k, k[0]);
+	res[0] = pre_endecrypt_des(line, l, fl);
+	ft_strcpy(fl->k, k[1]);
+	fl->decrypt = fl->decrypt ? 0 : 1;
+	res[1] = pre_endecrypt_des(res[0], ft_strlen(res[0]), fl);
+	ft_strcpy(fl->k, k[2]);
+	res[2] = pre_endecrypt_des(res[1], ft_strlen(res[0]), fl);
+	printf("%s\n%s\n%s\n", res[0], res[1], res[2]);
+	line3 = (char *)ft_memalloc(sizeof(char) * 20);
+	ft_strcpy(line3, "des3 is testing\n");
+	return (line3);
 }
 
 static	char			*pre_endecrypt_des(char *line, ssize_t l, t_fl *fl)
@@ -85,14 +99,13 @@ static	char			*pre_endecrypt_des(char *line, ssize_t l, t_fl *fl)
 	int			i;
 
 	if (ft_strlen(fl->k) != (fl->des3 ? 48 : 16))
-		fix_num(fl->k, fl);
-	if (fl->des_cbc && ft_strlen(fl->iv_buf) != 16)
-		fix_num(fl->iv_buf, fl);
+		fix_num(fl->k, fl, (fl->des3 ? 48 : 16));
+	if ((fl->des_cbc || fl->des3) && ft_strlen(fl->iv_buf) != 16)
+		fix_num(fl->iv_buf, fl, 16);
 	fl->iv = ft_atou_base(fl->iv_buf, 16);
 	l = !(l % 8) ? (l + 8) : l;
-	fl->des3 ? des3_algorythm(line, l, fl) : 0;
 	if (fl->des3)
-		return ("des3 testing\n");
+		return (des3_algorythm(line, l, fl));
 	line2 = endecrypt_des(to_digit((unsigned char *)line), fl);
 	i = 8;
 	while ((l - i) > 0)
@@ -125,7 +138,7 @@ static	int				help_put_des(char *r[], int k[], ssize_t l, t_fl *fl)
 		, 0, 0))), k[1]) : ft_putstr_fd(r[2], k[1]);
 	if ((!(fl->decrypt) && fl->a))
 		free(r[1]);
-//	free(r[2]);
+	free(r[2]);
 	return (0);
 }
 
