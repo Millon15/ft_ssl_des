@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/28 16:23:10 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/28 17:10:26 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,24 @@ static	void			fix_num(char k[], t_fl *fl)
 	ft_memcpy(k, res, (fl->des3 ? 49 : 17));
 }
 
+char					*des3_algorythm(char *line, ssize_t l, t_fl *fl)
+{
+	char		*line2;
+	char		*buf;
+	char		k[3][17];
+	int			i;
+
+	i = 0;
+	while (i < 48)
+	{
+		ft_strncpy(k[(i / 16)], (fl->k + i), 16);
+		k[(i / 16)][16] = '\0';
+		i += 16;
+	}
+	
+	return (line2);
+}
+
 static	char			*pre_endecrypt_des(char *line, ssize_t l, t_fl *fl)
 {
 	char		*line2;
@@ -72,6 +90,9 @@ static	char			*pre_endecrypt_des(char *line, ssize_t l, t_fl *fl)
 		fix_num(fl->iv_buf, fl);
 	fl->iv = ft_atou_base(fl->iv_buf, 16);
 	l = !(l % 8) ? (l + 8) : l;
+	fl->des3 ? des3_algorythm(line, l, fl) : 0;
+	if (fl->des3)
+		return ("des3 testing\n");
 	line2 = endecrypt_des(to_digit((unsigned char *)line), fl);
 	i = 8;
 	while ((l - i) > 0)
@@ -95,7 +116,7 @@ static	int				help_put_des(char *r[], int k[], ssize_t l, t_fl *fl)
 	else
 		r[2] = pre_endecrypt_des(r[1], l, fl);
 	free(r[1]);
-	if ((fl->decrypt && fl->a))
+	if (fl->decrypt && fl->a)
 		free(r[0]);
 	if (fl->decrypt)
 		fl->a ? write(k[1], r[2], l / 3 * 4) : write(k[1], r[2], l);
@@ -104,7 +125,7 @@ static	int				help_put_des(char *r[], int k[], ssize_t l, t_fl *fl)
 		, 0, 0))), k[1]) : ft_putstr_fd(r[2], k[1]);
 	if ((!(fl->decrypt) && fl->a))
 		free(r[1]);
-	free(r[2]);
+//	free(r[2]);
 	return (0);
 }
 

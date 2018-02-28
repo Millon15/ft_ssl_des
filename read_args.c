@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:03:55 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/28 16:23:36 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/02/28 16:58:06 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ static	int		put_endres(char **av, t_fl *fl)
 	}
 	if (fl->base64)
 		return (put_base64(av, fl, 0));
-	else if (fl->des_ecb || fl->des_cbc)
+	else if (fl->des_ecb || fl->des_cbc || fl->des3)
 		return (put_des(av, fl, 0));
 	return (-1);
 }
@@ -40,7 +40,7 @@ static	int		check_args(int ac, char **av, t_fl *fl)
 	char		buf[17];
 	ssize_t		ret;
 
-	while ((!((fl->k)[0]) && (fl->des_ecb || fl->des_cbc || fl->des3)))
+	if ((!((fl->k)[0]) && (fl->des_ecb || fl->des_cbc || fl->des3)))
 	{
 		ft_putstr("enter des encryption key: ");
 		ret = read(0, fl->k, (fl->des3 ? 49 : 17));
