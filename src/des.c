@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/27 14:44:10 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/02 19:21:51 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,6 +109,7 @@ char					*endecrypt_des(unsigned long buf, t_fl *fl)
 	unsigned long		l[17];
 	unsigned long		r[17];
 
+	// printf("%s\n", ft_utoa_base(buf, 16));
 	// printf("key = %lu\n", ft_atou_base(key, 16));
 	// print_b(ft_atou_base(key, 16));
 	// printf("%s\n\n", "0001001100110100010101110111100110011011101111001101111111110001");
@@ -140,9 +141,11 @@ char					*endecrypt_des(unsigned long buf, t_fl *fl)
 	// print_b(r[16]);
 	i = uni_permut(((r[16] << 32) | l[16]), g_final_permutation, 64, 64);
 	i = (fl->des_cbc && fl->decrypt) ? (i ^ fl->iv) : i;
-	fl->iv = (fl->des_cbc && !(fl->decrypt)) ? i : buf;
+	fl->iv = (fl->des_cbc && fl->decrypt) ? ( buf ^ fl->iv) : i;
+	// printf("\nLLL : %s\n", from_digit(i));
 	// print_b(i);
 	// printf("%s\n\n", "1000010111101000000100110101010000001111000010101011010000000101");
 	// return (ft_utoa_base(i, 16));
+	// printf("i = %s\n", ft_utoa_base(i, 16));
 	return (from_digit(i));
 }

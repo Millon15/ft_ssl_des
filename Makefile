@@ -6,7 +6,7 @@
 #    By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/12/28 19:24:02 by vbrazas           #+#    #+#              #
-#    Updated: 2018/02/26 15:25:28 by vbrazas          ###   ########.fr        #
+#    Updated: 2018/03/02 20:15:36 by vbrazas          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -19,6 +19,7 @@ SRC		=	ft_ssl.c \
 			$(SRC_D)base64.c \
 			$(SRC_D)put_des.c \
 			$(SRC_D)des.c \
+			$(SRC_D)des3.c \
 			$(SRC_D)help.c
 OBJ_D	=	obj/
 OBJ		=	$(addprefix $(OBJ_D), $(SRC:.c=.o))
@@ -37,8 +38,7 @@ $(NAME): $(OBJ)
 $(OBJ): | $(OBJ_D)
 
 $(OBJ_D):
-	mkdir $(OBJ_D)
-	mkdir $(OBJ_D)$(SRC_D)
+	mkdir -p $(OBJ_D)$(SRC_D)
 
 $(OBJ_D)%.o: %.c
 	gcc $(CFLAGS) $(IFLAGS) -o $@ -c $<

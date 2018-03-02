@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:03:55 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/28 16:58:06 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/01 14:38:59 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int				read_command(int ac, char **av, t_fl *fl, int i)
 		fl->des_ecb = 1;
 	else if (!(ft_strcmp(av[i], "des-cbc")))
 		fl->des_cbc = 1;
-	else if (!(ft_strcmp(av[i], "des3")))
+	else if (!(ft_strcmp(av[i], "des3")) || !(ft_strcmp(av[i], "des-ede3-cbc")) || !(ft_strcmp(av[i], "des-ede3")))
 		fl->des3 = 1;
 	else
 		return ((error(2, av, NULL, i)));

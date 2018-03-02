@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:47:17 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/28 16:22:01 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/02 16:57:33 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ char				*decrypt_base64(char *line, size_t ln, size_t i, size_t j);
 
 int					put_des(char **av, t_fl *fl, ssize_t ret);
 char				*endecrypt_des(unsigned long buf, t_fl *fl);
+char				*des3_algorythm(char *line, ssize_t *l, t_fl *fl);
 
 void				print_b(unsigned long a);
 

@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/10/30 20:15:12 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/08 00:17:22 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/02 20:36:33 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,5 +99,11 @@ int					ft_iswhitespace(int c);
 int					ft_atoi_base(const char *s, int base);
 unsigned long		ft_atou_base(const char *s, int base);
 char				*ft_utoa_base(unsigned long value, int base);
+char				*ft_strnjoin(char const *s1, char const *s2, \
+					size_t l1, size_t l2);
+ssize_t				ft_putnstr(char const *s, size_t len);
+ssize_t				ft_putnstr_fd(char const *s, int fd, size_t len);
+ssize_t				ft_putnendl(char const *s, size_t len);
+ssize_t				ft_putnendl_fd(char const *s, int fd, size_t len);
 
 #endif
