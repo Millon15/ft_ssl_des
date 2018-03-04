@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:30:05 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/26 15:24:36 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/04 22:33:11 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,27 +61,26 @@ char					*encrypt_base64(char *line, size_t ln, size_t i, \
 	unsigned char	res;
 	unsigned char	rem;
 	char			*fin;
-	unsigned int	tmp[2];
+	size_t			tmp[2];
 
-	tmp[1] = 0;
-	tmp[0] = (ln % 3) == 2 ? 1 : 0;
-	ln = ((((ln % 3) && (ln % 3) == 2) ? (ln + 1) : (ln + 2)) / 3 * 4);
-	fin = (char *)malloc(sizeof(char) * (ln + ln / 64 + 1));
-	while (i < ln)
+	tmp[0] = 0;
+	tmp[1] = ((ln + 2) / 3 * 4) + ((ln + 2) / 3 * 4) / 64;
+	fin = (char *)malloc(sizeof(char) * (tmp[1] + 1));
+	while (i < tmp[1])
 	{
 		fin[i++] = st[(unsigned char)line[j] >> 2];
 		rem = (unsigned char)line[j++] << 6;
 		res = ((unsigned char)line[j] >> 4) << 2;
 		fin[i++] = st[((res | rem) >> 2)];
 		rem = (unsigned char)line[j++] << 4;
-		res = (line[j] ? (((unsigned char)line[j] >> 6) << 2) : 0);
-		fin[i++] = (res || rem || tmp[0]) ? (st[((res | rem) >> 2)]) : '=';
-		rem = (line[j] ? ((unsigned char)line[j++] << 2) : 0);
-		fin[i++] = (res || rem) ? (st[(rem >> 2)]) : '=';
-		if (!((i - tmp[1]) % 64) && ++tmp[1])
+		res = (j < ln) ? (((unsigned char)line[j] >> 6) << 2) : 0;
+		fin[i++] = (res || rem || (j < ln)) ? (st[((res | rem) >> 2)]) : '=';
+		rem = (j < ln) ? ((unsigned char)line[j++] << 2) : 0;
+		fin[i++] = (res || rem || (j < ln)) ? (st[(rem >> 2)]) : '=';
+		if (!((i - tmp[0]) % 64) && ++tmp[0])
 			fin[i++] = '\n';
 	}
-	fin[i] = '\0';
+	fin[!((i - tmp[0]) % 64) ? (i - 1) : i] = '\0';
 	return (fin);
 }
 

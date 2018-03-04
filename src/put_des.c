@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/02 20:38:41 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/04 22:03:59 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,17 +89,20 @@ static	char			*pre_endecrypt_des(char *line, ssize_t *l, t_fl *fl)
 
 static	int				help_put_des(char *r[], int k[], ssize_t l, t_fl *fl)
 {
+	ssize_t		x;
+
 	free(r[0]);
-	// printf("l = %ld", l);
 	r[2] = ((fl->a && fl->decrypt) ? \
 	(pre_endecrypt_des(((r[0] = decrypt_base64(r[1], ft_strlen(\
 	r[1]), 0, 0))), &l, fl)) : (pre_endecrypt_des(r[1], &l, fl)));
-	// printf("l = %ld", l);
 	free(r[1]);
 	if (fl->decrypt && fl->a)
 		free(r[0]);
-	(fl->a && !(fl->decrypt)) ? ft_putnendl_fd((r[1] = (encrypt_base64(r[2], \
-	l, 0, 0))), k[1],  l / 3 * 4 + 1) : write(k[1], r[2], l);
+	if (!(fl->decrypt) && fl->a)
+		ft_putnendl_fd((r[1] = (encrypt_base64(r[2], \
+		l, 0, 0))), k[1], ft_strlen(r[1]));
+	else
+		write(k[1], r[2], l);
 	if ((!(fl->decrypt) && fl->a))
 		free(r[1]);
 	free(r[2]);
