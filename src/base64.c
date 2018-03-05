@@ -6,21 +6,21 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:30:05 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/04 22:51:23 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/05 17:49:59 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_ssl.h"
 #include "permutations.h"
 
-static	unsigned int	find_num(char a)
+static	unsigned char	find_num(char a)
 {
-	unsigned int	i;
+	unsigned char	i;
 
 	i = 0;
 	if (a == '=')
 		return (0);
-	while (a != st[i])
+	while (a != st[i] && st[i])
 		i++;
 	return (i);
 }
@@ -84,7 +84,15 @@ char					*encrypt_base64(char *line, size_t ln, size_t i, \
 	return (fin);
 }
 
-int						put_base64(char **av, t_fl *fl, ssize_t ret)
+static	int				help_put_base64(char *r[])
+{
+	free(r[2]);
+	free(r[1]);
+	free(r[0]);
+	return (0);
+}
+
+int						put_base64(char **av, t_fl *fl, ssize_t ret, ssize_t l)
 {
 	char		*r[3];
 	int			k[3];
@@ -102,12 +110,12 @@ int						put_base64(char **av, t_fl *fl, ssize_t ret)
 		r[2] = r[1];
 		r[1] = ft_strjoin(r[1], r[0]);
 		free(r[2]);
+		l += ret;
 	}
-	r[2] = (fl->decrypt ? decrypt_base64(r[1], ft_strlen(r[1]), 0, 0)\
-	: encrypt_base64(r[1], ft_strlen(r[1]), 0, 0));
-	fl->decrypt ? ft_putstr_fd(r[2], k[1]) : ft_putendl_fd(r[2], k[1]);
-	free(r[2]);
-	free(r[1]);
-	free(r[0]);
-	return (0);
+	l = fl->decrypt ? (l / 4 * 3 + (l / 4 * 3) / 64) : \
+	(l / 3 * 4 + (l / 3 * 4) / 64);
+	r[2] = (fl->decrypt ? decrypt_base64(r[1], l, 0, 0)	: \
+	encrypt_base64(r[1], l, 0, 0));
+	fl->decrypt ? ft_putnstr_fd(r[2], k[1], l) : ft_putnendl_fd(r[2], k[1], l);
+	return (help_put_base64(r));
 }

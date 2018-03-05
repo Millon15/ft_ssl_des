@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/05 17:02:00 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/05 17:30:52 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,7 @@ static	char			*pre_endecrypt_des(char *line, ssize_t *l, t_fl *fl)
 	ssize_t		l_buf;
 	ssize_t		i;
 
+	*l = (fl->a && fl->decrypt) ? ((*l - *l / 64) / 4 * 3) : *l;
 	l_buf = *l;
 	*l = (!(*l % 8) && !(fl->decrypt)) ? (*l + 8) : *l;
 	buf[0] = endecrypt_des(to_digit((unsigned char *)line, l_buf, i), fl);
@@ -96,9 +97,11 @@ static	int				help_put_des(char *r[], int k[], ssize_t l, t_fl *fl)
 	(pre_endecrypt_des(((r[0] = decrypt_base64(r[1], l, \
 	0, 0))), &l, fl)) : (pre_endecrypt_des(r[1], &l, fl)));
 	free(r[1]);
-	// printf("l = %zu\n\n", l);
 	if (fl->decrypt && fl->a)
+	{
+		printf("r[0] = %s\n\n", r[0]);
 		free(r[0]);
+	}
 	if (!(fl->decrypt) && fl->a)
 		ft_putnendl_fd((r[1] = (encrypt_base64(r[2], \
 		l, 0, 0))), k[1], ft_strlen(r[1]));
