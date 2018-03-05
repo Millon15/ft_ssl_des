@@ -6,30 +6,30 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/04 22:03:59 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/05 17:02:00 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_ssl.h"
 
-static	unsigned long	to_digit(unsigned char *s)
+static	unsigned long	to_digit(unsigned char *s, ssize_t l, ssize_t passed)
 {
 	unsigned long	res;
-	int				i;
-	int				l;
+	ssize_t			i;
 	int				k;
+	int				len;
 
 	i = 0;
 	k = 0;
-	l = 0;
+	len = 0;
 	res = 0;
-	while (l != 8)
+	while (len != 8)
 	{
 		res <<= 8;
-		if (!s[i] && !k)
-			k = 8 - l;
-		res |= (s[i] ? s[i++] : k);
-		l++;
+		if ((i + passed) >= l && !k)
+			k = 8 - len;
+		res |= (s[i] || (i + passed) < l ? s[i++] : k);
+		len++;
 	}
 	return (res);
 }
@@ -62,23 +62,18 @@ static	void			fix_num(char k[], t_fl *fl, int l)
 static	char			*pre_endecrypt_des(char *line, ssize_t *l, t_fl *fl)
 {
 	char		*buf[3];
-	int			i;
+	ssize_t		l_buf;
+	ssize_t		i;
 
-	if (ft_strlen(fl->k) != (fl->des3 ? 48 : 16))
-		fix_num(fl->k, fl, (fl->des3 ? 48 : 16));
-	if ((fl->des_cbc || fl->des3) && ft_strlen(fl->iv_buf) != 16)
-		fix_num(fl->iv_buf, fl, 16);
-	fl->iv = ft_atou_base(fl->iv_buf, 16);
+	l_buf = *l;
 	*l = (!(*l % 8) && !(fl->decrypt)) ? (*l + 8) : *l;
-	// if (fl->des3)
-	// 	return (des3_algorythm(line, &l, fl));
-	buf[0] = endecrypt_des(to_digit((unsigned char *)line), fl);
+	buf[0] = endecrypt_des(to_digit((unsigned char *)line, l_buf, i), fl);
 	i = 8;
 	while ((*l - i) > 0)
 	{
-		buf[1] = endecrypt_des(to_digit((unsigned char *)line + i), fl);
+		buf[1] = endecrypt_des(to_digit((unsigned char *)line + i, l_buf, i), fl);
 		buf[2] = buf[0];
-		buf[0] = ft_strnjoin(buf[0], buf[1], i, 8);
+		buf[0] = ft_strnjoin(buf[0], buf[1], (size_t)i, (size_t)8);
 		free(buf[2]);
 		free(buf[1]);
 		i += 8;
@@ -89,13 +84,19 @@ static	char			*pre_endecrypt_des(char *line, ssize_t *l, t_fl *fl)
 
 static	int				help_put_des(char *r[], int k[], ssize_t l, t_fl *fl)
 {
-	ssize_t		x;
-
+	if (ft_strlen(fl->k) != (fl->des3 ? 48 : 16))
+		fix_num(fl->k, fl, (fl->des3 ? 48 : 16));
+	if ((fl->des_cbc || fl->des3) && \
+	(fl->iv_buf)[0] && ft_strlen(fl->iv_buf) != 16)
+		fix_num(fl->iv_buf, fl, 16);
+	if ((fl->des_cbc || fl->des3))
+		fl->iv = ft_atou_base(fl->iv_buf, 16);
 	free(r[0]);
 	r[2] = ((fl->a && fl->decrypt) ? \
-	(pre_endecrypt_des(((r[0] = decrypt_base64(r[1], ft_strlen(\
-	r[1]), 0, 0))), &l, fl)) : (pre_endecrypt_des(r[1], &l, fl)));
+	(pre_endecrypt_des(((r[0] = decrypt_base64(r[1], l, \
+	0, 0))), &l, fl)) : (pre_endecrypt_des(r[1], &l, fl)));
 	free(r[1]);
+	// printf("l = %zu\n\n", l);
 	if (fl->decrypt && fl->a)
 		free(r[0]);
 	if (!(fl->decrypt) && fl->a)
@@ -109,11 +110,10 @@ static	int				help_put_des(char *r[], int k[], ssize_t l, t_fl *fl)
 	return (0);
 }
 
-int						put_des(char **av, t_fl *fl, ssize_t ret)
+int						put_des(char **av, t_fl *fl, ssize_t ret, ssize_t l)
 {
 	char		*r[3];
 	int			k[3];
-	ssize_t		l;
 
 	if ((k[0] = fl->in ? open(fl->in, O_RDONLY) : 0) == -1)
 		return (error(-1, av, fl->in, 0));
@@ -122,15 +122,15 @@ int						put_des(char **av, t_fl *fl, ssize_t ret)
 	k[2] = (fl->bufs ? fl->bufs : BUFF_SIZE);
 	r[0] = (char *)malloc(sizeof(char) * (k[2] + 1));
 	r[1] = (char *)ft_memalloc(sizeof(char) * 1);
-	r[1][0] = '\0';
-	l = 0;
 	while ((ret = read(k[0], r[0], k[2])))
 	{
 		r[0][ret] = '\0';
 		r[2] = r[1];
-		r[1] = ft_strjoin(r[1], r[0]);
+		r[1] = ft_strnjoin(r[1], r[0], (size_t)l, (size_t)ret);
 		free(r[2]);
 		l += ret;
 	}
+	// write(1, r[1], l);
+	// write(1, "\n123\n\n\n\n", 8);
 	return (help_put_des(r, k, l, fl));
 }

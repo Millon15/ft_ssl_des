@@ -14,6 +14,19 @@ char			*des3_algorythm(char *line, ssize_t *l, t_fl *fl)
 		k[(i / 16)][16] = '\0';
 		i += 16;
 	}
+	// *l = (!(*l % 8) && !(fl->decrypt)) ? (*l + 8) : *l;
+	// res[0] = endecrypt_des(to_digit((unsigned char *)line), fl);
+	// i = 8;
+	// while ((*l - i) > 0)
+	// {
+	// 	res[1] = endecrypt_des(to_digit((unsigned char *)line + i), fl);
+	// 	res[2] = res[0];
+	// 	res[0] = ft_strnjoin(res[0], res[1], i, 8);
+	// 	free(res[2]);
+	// 	free(res[1]);
+	// 	i += 8;
+	// }
+	// *l = i;
 	// fl->des3 = 0;
 	ft_strcpy(fl->k, k[0]);
 	// res[0] = pre_endecrypt_des(line, *l, fl);

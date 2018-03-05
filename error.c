@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 20:09:45 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/28 15:38:24 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/05 15:56:20 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,13 @@
 
 static	void	help(int ac, char **av, char *str, int i)
 {
-	if (ac > 2 && ac != 99)
+	if (ac > 2)
 	{
 		if (!str)
 			ft_putstr("unknown option '");
 		else if ((unsigned long)str == 1)
-			ft_putstr("missing file argument for '");
-		if ((unsigned long)str == 2 || (unsigned long)str == 1 || !str)
+			ft_putstr("missing argument for '");
+		if ((unsigned long)str == 1 || !str)
 			ft_putstr(av[i]);
 		ft_putstr("'\nusage: ft_ssl command [command opts] [command args]\n\n"
 		"Valid command opts values:\n\n"
