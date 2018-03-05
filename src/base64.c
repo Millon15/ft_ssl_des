@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:30:05 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/05 17:49:59 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/05 17:55:10 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,10 +112,9 @@ int						put_base64(char **av, t_fl *fl, ssize_t ret, ssize_t l)
 		free(r[2]);
 		l += ret;
 	}
-	l = fl->decrypt ? (l / 4 * 3 + (l / 4 * 3) / 64) : \
-	(l / 3 * 4 + (l / 3 * 4) / 64);
-	r[2] = (fl->decrypt ? decrypt_base64(r[1], l, 0, 0)	: \
-	encrypt_base64(r[1], l, 0, 0));
+	r[2] = (fl->decrypt ? decrypt_base64(r[1], l, 0, 0)\
+	: encrypt_base64(r[1], l, 0, 0));
+	l = fl->decrypt ? (l / 4 * 3 + (l / 4 * 3) / 64) : (l / 3 * 4 + (l / 3 * 4) / 64);
 	fl->decrypt ? ft_putnstr_fd(r[2], k[1], l) : ft_putnendl_fd(r[2], k[1], l);
 	return (help_put_base64(r));
 }
