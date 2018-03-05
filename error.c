@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 20:09:45 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/05 15:56:20 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/05 18:19:49 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ int				error(int ac, char **av, char *str, int i)
 	if (ac == -1)
 	{
 		if (str)
-			ft_putstr(str);
-		ft_putstr(": No such file or directory\n");
+			ft_putstr_fd(str, 2);
+		ft_putstr_fd(": No such file or directory\n", 2);
 	}
 	else if (ac == 1)
 		ft_putstr("usage: ft_ssl command [command opts] [command args]\n");

@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/05 17:51:56 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/05 18:38:57 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ static	unsigned long	to_digit(unsigned char *s, ssize_t l, ssize_t passed)
 		res <<= 8;
 		if ((i + passed) >= l && !k)
 			k = 8 - len;
-		res |= (s[i] || (i + passed) < l ? s[i++] : k);
+		res |= (s[i] || ((i + passed) < l) ? s[i++] : k);
 		len++;
 	}
 	return (res);
@@ -70,11 +70,11 @@ static	char			*pre_endecrypt_des(char *line, ssize_t *l, t_fl *fl)
 	*l = (!(*l % 8) && !(fl->decrypt)) ? (*l + 8) : *l;
 	buf[0] = endecrypt_des(to_digit((unsigned char *)line, l_buf, i), fl);
 	i = 8;
-	while ((*l - i) > 0)
+	while (i < *l)
 	{
-		buf[1] = endecrypt_des(to_digit((unsigned char *)line + i, l_buf, i), fl);
+		buf[1] = endecrypt_des(to_digit((unsigned char *)(line + i), l_buf, i), fl);
 		buf[2] = buf[0];
-		buf[0] = ft_strnjoin(buf[0], buf[1], (size_t)i, (size_t)8);
+		buf[0] = ft_strnjoin(buf[0], buf[1], i, 8);
 		free(buf[2]);
 		free(buf[1]);
 		i += 8;
@@ -90,7 +90,7 @@ static	int				help_put_des(char *r[], int k[], ssize_t l, t_fl *fl)
 	if ((fl->des_cbc || fl->des3) && \
 	(fl->iv_buf)[0] && ft_strlen(fl->iv_buf) != 16)
 		fix_num(fl->iv_buf, fl, 16);
-	if ((fl->des_cbc || fl->des3))
+	if (fl->des_cbc || fl->des3)
 		fl->iv = ft_atou_base(fl->iv_buf, 16);
 	free(r[0]);
 	r[2] = ((fl->a && fl->decrypt) ? \
