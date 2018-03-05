@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 00:39:08 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/05 20:56:38 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/05 21:22:39 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ static	void	fill_zeros(t_fl *fl)
 	fl->des3 = 0;
 	fl->des3_ecb = 0;
 	fl->des3_cbc = 0;
+	fl->cbc_mode = 0;
 	fl->a = 0;
 	fl->iv = 0;
 	fl->bufs = 0;

@@ -6,30 +6,12 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/05 20:53:06 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/05 21:40:57 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_ssl.h"
 #include "permutations.h"
-
-char					*from_digit(unsigned long res)
-{
-	char	*s;
-	int		a;
-	int		i;
-
-	s = (char *)malloc(sizeof(char) * 9);
-	i = 0;
-	a = 0;
-	while (a != 64)
-	{
-		s[i++] = (res << a) >> 56;
-		a += 8;
-	}
-	s[8] = '\0';
-	return (s);
-}
 
 static	void			shift_keys(unsigned long c[], unsigned long d[])
 {

@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/05 20:56:51 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/05 21:32:21 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ static	char			*pre_endecrypt_des(char *line, ssize_t *l, \
 	while (i < *l)
 	{
 		f[0] = to_digit((unsigned char *)(line + i), l_buf, i);
-		f[0] = (fl->des_cbc && !(fl->decrypt)) ? (f[0] ^ fl->iv) : f[0];
-		f[1] = endecrypt_des(f[0], fl);
-		f[1] = (fl->des_cbc && fl->decrypt) ? (f[1] ^ fl->iv) : f[1];
-		fl->iv = (fl->des_cbc && fl->decrypt) ? f[0] : f[1];
+		f[0] = (fl->cbc_mode && !(fl->decrypt)) ? (f[0] ^ fl->iv) : f[0];
+		f[1] = fl->des3 ? des3_algorythm(f[0], fl) : endecrypt_des(f[0], fl);
+		f[1] = (fl->cbc_mode && fl->decrypt) ? (f[1] ^ fl->iv) : f[1];
+		fl->iv = (fl->cbc_mode && fl->decrypt) ? f[0] : f[1];
 		buf[1] = from_digit(f[1]);
 		buf[2] = buf[0];
 		buf[0] = ft_strnjoin(buf[0], buf[1], i, 8);
@@ -93,10 +93,10 @@ static	int				help_put_des(char *r[], int k[], ssize_t l, t_fl *fl)
 {
 	if (ft_strlen(fl->k) != (fl->des3 ? 48 : 16))
 		fix_num(fl->k, fl, (fl->des3 ? 48 : 16));
-	if ((fl->des_cbc || fl->des3) && \
+	if (fl->cbc_mode && \
 	(fl->iv_buf)[0] && ft_strlen(fl->iv_buf) != 16)
 		fix_num(fl->iv_buf, fl, 16);
-	if (fl->des_cbc || fl->des3)
+	if (fl->cbc_mode)
 		fl->iv = ft_atou_base(fl->iv_buf, 16);
 	free(r[0]);
 	r[2] = ((fl->a && fl->decrypt) ? \

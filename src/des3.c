@@ -1,11 +1,40 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   des3.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2018/03/05 21:41:18 by vbrazas           #+#    #+#             */
+/*   Updated: 2018/03/05 21:41:57 by vbrazas          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "../ft_ssl.h"
 
-char			*des3_algorythm(char *line, ssize_t *l, t_fl *fl)
+char					*from_digit(unsigned long res)
 {
-	char		*res[3];
-	char		k[3][17];
-	int			i;
+	char	*s;
+	int		a;
+	int		i;
+
+	s = (char *)malloc(sizeof(char) * 9);
+	i = 0;
+	a = 0;
+	while (a != 64)
+	{
+		s[i++] = (res << a) >> 56;
+		a += 8;
+	}
+	s[8] = '\0';
+	return (s);
+}
+
+unsigned long			des3_algorythm(unsigned long buf, t_fl *fl)
+{
+	unsigned long		res[3];
+	char				k[3][17];
+	ssize_t				i;
 
 	i = 0;
 	while (i < 48)
@@ -14,31 +43,13 @@ char			*des3_algorythm(char *line, ssize_t *l, t_fl *fl)
 		k[(i / 16)][16] = '\0';
 		i += 16;
 	}
-	// *l = (!(*l % 8) && !(fl->decrypt)) ? (*l + 8) : *l;
-	// res[0] = endecrypt_des(to_digit((unsigned char *)line), fl);
-	// i = 8;
-	// while ((*l - i) > 0)
-	// {
-	// 	res[1] = endecrypt_des(to_digit((unsigned char *)line + i), fl);
-	// 	res[2] = res[0];
-	// 	res[0] = ft_strnjoin(res[0], res[1], i, 8);
-	// 	free(res[2]);
-	// 	free(res[1]);
-	// 	i += 8;
-	// }
-	// *l = i;
-	// fl->des3 = 0;
 	ft_strcpy(fl->k, k[0]);
-	// res[0] = pre_endecrypt_des(line, *l, fl);
+	res[0] = endecrypt_des(buf, fl);
 	ft_strcpy(fl->k, k[1]);
-	fl->decrypt = 1;//fl->decrypt ? 0 : 1;
-	// res[1] = pre_endecrypt_des(res[0], ft_strlen(res[0]), fl);
+	fl->decrypt = fl->decrypt ? 0 : 1;
+	res[1] = endecrypt_des(res[0], fl);
 	ft_strcpy(fl->k, k[2]);
-	fl->decrypt = 0;//fl->decrypt ? 1 : 0;
-	// res[2] = pre_endecrypt_des(res[1], ft_strlen(res[0]), fl);
-	// printf("%s\n%s\n\n", res[0], res[1]);
-	free(res[0]);
-	free(res[1]);
-	*l = ft_strlen(res[2]);
+	fl->decrypt = fl->decrypt ? 1 : 0;
+	res[2] = endecrypt_des(res[1], fl);
 	return (res[2]);
 }

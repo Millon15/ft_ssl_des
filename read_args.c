@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:03:55 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/05 20:59:13 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/05 21:38:12 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static	int		put_endres(char **av, t_fl *fl)
 	char		buf[17];
 	ssize_t		ret;
 
-	if (!((fl->iv_buf)[0]) && (fl->des_cbc || fl->des3))
+	if (!((fl->iv_buf)[0]) && fl->cbc_mode)
 	{
 		ft_putstr("enter des initial vector: ");
 		ret = read(0, fl->iv_buf, 17);
@@ -40,7 +40,7 @@ static	int		check_args(int ac, char **av, t_fl *fl)
 	char		buf[17];
 	ssize_t		ret;
 
-	if ((!((fl->k)[0]) && (fl->des_ecb || fl->des_cbc || fl->des3)))
+	if (!((fl->k)[0]) && fl->cbc_mode)
 	{
 		ft_putstr("enter des encryption key: ");
 		ret = read(0, fl->k, (fl->des3 ? 49 : 17));
@@ -112,5 +112,7 @@ int				read_command(int ac, char **av, t_fl *fl, int i)
 		return ((error(2, av, NULL, i)));
 	if (fl->des3_ecb || fl->des3_cbc)
 		fl->des3 = 1;
+	if (fl->des3_cbc || fl->des_cbc)
+		fl->cbc_mode = 1;
 	return (read_args(ac, av, fl, i));
 }
