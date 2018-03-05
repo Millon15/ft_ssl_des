@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/05 18:38:57 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/05 20:44:55 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,24 @@ static	void			fix_num(char k[], t_fl *fl, int l)
 
 static	char			*pre_endecrypt_des(char *line, ssize_t *l, t_fl *fl)
 {
-	char		*buf[3];
-	ssize_t		l_buf;
-	ssize_t		i;
+	unsigned long		f[3];
+	char				*buf[3];
+	ssize_t				l_buf;
+	ssize_t				i;
 
 	*l = (fl->a && fl->decrypt) ? ((*l - *l / 64) / 4 * 3) : *l;
 	l_buf = *l;
 	*l = (!(*l % 8) && !(fl->decrypt)) ? (*l + 8) : *l;
-	buf[0] = endecrypt_des(to_digit((unsigned char *)line, l_buf, i), fl);
-	i = 8;
+	buf[0] = malloc(1);
+	i = 0;
 	while (i < *l)
 	{
-		buf[1] = endecrypt_des(to_digit((unsigned char *)(line + i), l_buf, i), fl);
+		f[0] = to_digit((unsigned char *)(line + i), l_buf, i);
+		f[0] = (fl->des_cbc && !(fl->decrypt)) ? (f[0] ^ fl->iv) : f[0];
+		f[1] = endecrypt_des(f[0], fl);
+		f[1] = (fl->des_cbc && fl->decrypt) ? (f[1] ^ fl->iv) : f[1];
+		fl->iv = (fl->des_cbc && fl->decrypt) ? f[0] : f[1];
+		buf[1] = from_digit(f[1]);
 		buf[2] = buf[0];
 		buf[0] = ft_strnjoin(buf[0], buf[1], i, 8);
 		free(buf[2]);

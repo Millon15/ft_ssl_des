@@ -6,14 +6,14 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 15:41:13 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/04 22:41:25 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/05 20:25:30 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_ssl.h"
 #include "permutations.h"
 
-static	char			*from_digit(unsigned long res)
+char					*from_digit(unsigned long res)
 {
 	char	*s;
 	int		a;
@@ -88,7 +88,7 @@ static	unsigned long	f(unsigned long text, unsigned long ki)
 	return (res[0]);
 }
 
-char					*endecrypt_des(unsigned long buf, t_fl *fl)
+unsigned long			endecrypt_des(unsigned long buf, t_fl *fl)
 {
 	unsigned long		i;
 	unsigned long		m[17];
@@ -103,7 +103,7 @@ char					*endecrypt_des(unsigned long buf, t_fl *fl)
 	i = 0;
 	while (i++ < 16)
 		k[i] = uni_permut(((l[i] << 28) | r[i]), g_key_permutation_2, 48, 56);
-	buf = (fl->des_cbc && !(fl->decrypt)) ? (buf ^ fl->iv) : buf;
+	// buf = (fl->des_cbc && !(fl->decrypt)) ? (buf ^ fl->iv) : buf;
 	m[0] = uni_permut(buf, g_initial_permutation, 64, 64);
 	l[0] = (m[0] >> 32);
 	r[0] = (m[0] << 32) >> 32;
@@ -114,7 +114,7 @@ char					*endecrypt_des(unsigned long buf, t_fl *fl)
 		r[i] = l[i - 1] ^ f(r[i - 1], k[(fl->decrypt ? (17 - i) : i)]);
 	}
 	i = uni_permut(((r[16] << 32) | l[16]), g_final_permutation, 64, 64);
-	i = (fl->des_cbc && fl->decrypt) ? (i ^ fl->iv) : i;
-	fl->iv = (fl->des_cbc && fl->decrypt) ? (buf ^ fl->iv) : i;
-	return (from_digit(i));
+	// i = (fl->des_cbc && fl->decrypt) ? (i ^ fl->iv) : i;
+	// fl->iv = (fl->des_cbc && fl->decrypt) ? (buf ^ fl->iv) : i;
+	return (i);
 }
