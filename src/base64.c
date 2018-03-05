@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:30:05 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/05 17:55:10 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/05 20:49:36 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ static	unsigned char	find_num(char a)
 	i = 0;
 	if (a == '=')
 		return (0);
-	while (a != st[i] && st[i])
+	while (a != g_st[i] && g_st[i])
 		i++;
 	return (i);
 }
@@ -68,15 +68,15 @@ char					*encrypt_base64(char *line, size_t ln, size_t i, \
 	fin = (char *)malloc(sizeof(char) * (tmp[1] + 1));
 	while (i < tmp[1])
 	{
-		fin[i++] = st[(unsigned char)line[j] >> 2];
+		fin[i++] = g_st[(unsigned char)line[j] >> 2];
 		rem = (unsigned char)line[j++] << 6;
 		res = ((unsigned char)line[j] >> 4) << 2;
-		fin[i++] = st[((res | rem) >> 2)];
+		fin[i++] = g_st[((res | rem) >> 2)];
 		rem = (unsigned char)line[j++] << 4;
 		res = (j < ln) ? (((unsigned char)line[j] >> 6) << 2) : 0;
-		fin[i++] = (res || rem || (j < ln)) ? (st[((res | rem) >> 2)]) : '=';
+		fin[i++] = (res || rem || (j < ln)) ? (g_st[((res | rem) >> 2)]) : '=';
 		rem = (j < ln) ? ((unsigned char)line[j++] << 2) : 0;
-		fin[i++] = (res || rem || (j < ln)) ? (st[(rem >> 2)]) : '=';
+		fin[i++] = (res || rem || (j < ln)) ? (g_st[(rem >> 2)]) : '=';
 		if (!((i - tmp[0]) % 64) && ++tmp[0])
 			fin[i++] = '\n';
 	}
@@ -114,7 +114,8 @@ int						put_base64(char **av, t_fl *fl, ssize_t ret, ssize_t l)
 	}
 	r[2] = (fl->decrypt ? decrypt_base64(r[1], l, 0, 0)\
 	: encrypt_base64(r[1], l, 0, 0));
-	l = fl->decrypt ? (l / 4 * 3 + (l / 4 * 3) / 64) : (l / 3 * 4 + (l / 3 * 4) / 64);
+	l = fl->decrypt ? (l / 4 * 3 + (l / 4 * 3) / 64) : \
+	(l / 3 * 4 + (l / 3 * 4) / 64);
 	fl->decrypt ? ft_putnstr_fd(r[2], k[1], l) : ft_putnendl_fd(r[2], k[1], l);
 	return (help_put_base64(r));
 }

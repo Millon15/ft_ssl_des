@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/05 20:44:55 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/05 20:56:51 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,17 +59,17 @@ static	void			fix_num(char k[], t_fl *fl, int l)
 	ft_strncpy(k, res, (l + 1));
 }
 
-static	char			*pre_endecrypt_des(char *line, ssize_t *l, t_fl *fl)
+static	char			*pre_endecrypt_des(char *line, ssize_t *l, \
+						ssize_t l_buf, t_fl *fl)
 {
 	unsigned long		f[3];
 	char				*buf[3];
-	ssize_t				l_buf;
 	ssize_t				i;
 
 	*l = (fl->a && fl->decrypt) ? ((*l - *l / 64) / 4 * 3) : *l;
 	l_buf = *l;
 	*l = (!(*l % 8) && !(fl->decrypt)) ? (*l + 8) : *l;
-	buf[0] = malloc(1);
+	buf[0] = ft_memalloc(1);
 	i = 0;
 	while (i < *l)
 	{
@@ -101,7 +101,7 @@ static	int				help_put_des(char *r[], int k[], ssize_t l, t_fl *fl)
 	free(r[0]);
 	r[2] = ((fl->a && fl->decrypt) ? \
 	(pre_endecrypt_des(((r[0] = decrypt_base64(r[1], l, \
-	0, 0))), &l, fl)) : (pre_endecrypt_des(r[1], &l, fl)));
+	0, 0))), &l, 0, fl)) : (pre_endecrypt_des(r[1], &l, 0, fl)));
 	free(r[1]);
 	if (fl->decrypt && fl->a)
 		free(r[0]);

@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:03:55 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/05 17:46:38 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/05 20:59:13 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,10 +104,13 @@ int				read_command(int ac, char **av, t_fl *fl, int i)
 		fl->des_ecb = 1;
 	else if (!(ft_strcmp(av[i], "des-cbc")))
 		fl->des_cbc = 1;
-	else if (!(ft_strcmp(av[i], "des3")) || !(ft_strcmp(av[i], "des-ede3-cbc")) || !(ft_strcmp(av[i], "des-ede3")))
-		fl->des3 = 1;
+	else if (!(ft_strcmp(av[i], "des3")) || !(ft_strcmp(av[i], "des-ede3-cbc")))
+		fl->des3_cbc = 1;
+	else if (!(ft_strcmp(av[i], "des-ede3")))
+		fl->des3_ecb = 1;
 	else
 		return ((error(2, av, NULL, i)));
+	if (fl->des3_ecb || fl->des3_cbc)
+		fl->des3 = 1;
 	return (read_args(ac, av, fl, i));
 }
-	

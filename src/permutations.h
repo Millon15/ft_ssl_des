@@ -6,15 +6,15 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:15:48 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/02/25 21:06:49 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/05 20:50:52 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PERMUTATIONS_H
 # define PERMUTATIONS_H
 
-static char				st[] =	"ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-								"abcdefghijklmnopqrstuvwxyz0123456789+/";
+static char				g_st[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+"abcdefghijklmnopqrstuvwxyz0123456789+/";
 
 static unsigned char	g_key_permutation_1[56] =
 {
