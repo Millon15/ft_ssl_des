@@ -52,8 +52,6 @@ unsigned long			des3_algorythm(unsigned long buf, t_fl *fl)
 	ft_strcpy(fl->k, (fl->sub_k)[0]);
 	res[0] = endecrypt_des(buf, fl);
 	ft_strcpy(fl->k, (fl->sub_k)[1]);
-	
-	
 	res[1] = endecrypt_des(res[0], fl);
 	ft_strcpy(fl->k, (fl->sub_k)[2]);
 	res[2] = endecrypt_des(res[1], fl);
