@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/07 21:11:42 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/07 22:12:29 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,8 @@ static	int				help_put_des(char *r[], int k[], ssize_t l, t_fl *fl)
 	if (fl->cbc_mode)
 		fl->iv = ft_atou_base(fl->iv_buf, 16);
 	free(r[0]);
+	if (fl->des3)
+		make_subkey(fl);
 	r[2] = ((fl->a && fl->decrypt) ? \
 	(pre_endecrypt_des(((r[0] = decrypt_base64(r[1], l, \
 	0, 0))), &l, 0, fl)) : (pre_endecrypt_des(r[1], &l, 0, fl)));

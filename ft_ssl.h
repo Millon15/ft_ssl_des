@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:47:17 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/05 21:35:57 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/07 22:12:19 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef	struct		s_fl
 	char			*in;
 	char			*out;
 	char			k[49];
+	char			sub_k[3][17];
 	char			iv_buf[17];
 }					t_fl;
 
@@ -50,6 +51,7 @@ int					put_des(char **av, t_fl *fl, ssize_t ret, ssize_t l);
 unsigned long		endecrypt_des(unsigned long buf, t_fl *fl);
 unsigned long		des3_algorythm(unsigned long buf, t_fl *fl);
 char				*from_digit(unsigned long res);
+void				make_subkey(t_fl *fl);
 
 
 void				print_b(unsigned long a);

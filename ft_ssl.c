@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 00:39:08 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/05 21:22:39 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/07 22:05:55 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,9 @@ static	void	fill_zeros(t_fl *fl)
 	fl->in = 0;
 	fl->out = 0;
 	ft_bzero(fl->k, 49);
+	ft_bzero(fl->sub_k[0], 17);
+	ft_bzero(fl->sub_k[1], 17);
+	ft_bzero(fl->sub_k[2], 17);
 	ft_bzero(fl->iv_buf, 17);
 }
 
