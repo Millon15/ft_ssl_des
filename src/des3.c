@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/03/05 21:41:18 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/08 02:51:04 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/08 11:10:06 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,13 +49,13 @@ unsigned long			des3_algorythm(unsigned long buf, t_fl *fl)
 	char				k_buf[49];
 
 	ft_strcpy(k_buf, fl->k);
-	ft_strcpy(fl->k, (fl->sub_k)[0]);
+	ft_strcpy(fl->k, fl->decrypt ? (fl->sub_k)[2] : (fl->sub_k)[0]);
 	res[0] = endecrypt_des(buf, fl);
+	fl->decrypt = fl->decrypt ? 0 : 1;
 	ft_strcpy(fl->k, (fl->sub_k)[1]);
-	fl->decrypt = fl->decrypt ? 0 : 1;
 	res[1] = endecrypt_des(res[0], fl);
-	ft_strcpy(fl->k, (fl->sub_k)[2]);
 	fl->decrypt = fl->decrypt ? 0 : 1;
+	ft_strcpy(fl->k, fl->decrypt ? (fl->sub_k)[0] : (fl->sub_k)[2]);
 	res[2] = endecrypt_des(res[1], fl);
 	ft_strcpy(fl->k, k_buf);
 	return (res[2]);
