@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:30:05 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/05 20:49:36 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/09 20:44:27 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int						put_base64(char **av, t_fl *fl, ssize_t ret, ssize_t l)
 
 	if ((k[0] = fl->in ? open(fl->in, O_RDONLY) : 0) == -1)
 		return (error(-1, av, fl->in, 0));
-	if ((k[1] = fl->out ? open(fl->out, O_WRONLY) : 1) == -1)
+	if ((k[1] = fl->out ? open(fl->out, O_WRONLY | O_CREAT | O_TRUNC, 0666) : 1) == -1)
 		return (error(-1, av, fl->out, 0));
 	k[2] = (fl->bufs ? fl->bufs : BUFF_SIZE);
 	r[0] = (char *)malloc(sizeof(char) * (k[2] + 1));
