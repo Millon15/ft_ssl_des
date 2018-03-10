@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:03:55 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/09 19:11:19 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/10 13:10:16 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ static	int		put_endres(char **av, t_fl *fl)
 	return (-1);
 }
 
-static	int		check_args(int ac, char **av, t_fl *fl)
+static	int		check_args(char **av, t_fl *fl)
 {
 	char		buf[17];
 	ssize_t		ret;
@@ -55,7 +55,7 @@ static	int		check_args(int ac, char **av, t_fl *fl)
 	return (0);
 }
 
-static	int		help_read_args(int ac, char **av, t_fl *fl, int i)
+static	int		help_read_args(char **av, t_fl *fl, int i)
 {
 	if (!(ft_strcmp(av[i], "-e")))
 		return ((fl->encrypt = 1));
@@ -90,10 +90,10 @@ static	int		read_args(int ac, char **av, t_fl *fl, int i)
 			ft_strncpy(fl->k, av[++i], (fl->des3 ? 48 : 16));
 		else if (!(ft_strcmp(av[i], "-iv")) || !(ft_strcmp(av[i], "-v")))
 			ft_strncpy(fl->iv_buf, av[++i], 16);
-		else if ((help_read_args(ac, av, fl, i)) == -1)
+		else if ((help_read_args(av, fl, i)) == -1)
 			return ((error(ac, av, NULL, i)));
 	}
-	return (check_args(ac, av, fl));
+	return (check_args(av, fl));
 }
 
 int				read_command(int ac, char **av, t_fl *fl, int i)

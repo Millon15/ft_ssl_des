@@ -6,19 +6,17 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:47:17 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/08 02:47:35 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/10 13:11:40 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_SSL_DES_H
-# define FT_SSL_DES_H
+#ifndef FT_SSL_H
+# define FT_SSL_H
 # define BUFF_SIZE 4096
 # include <sys/types.h>
 # include <sys/uio.h>
 # include <fcntl.h>
 # include "libft/libft.h"
-
-#include <stdio.h>
 
 typedef	struct		s_fl
 {
@@ -52,8 +50,5 @@ unsigned long		endecrypt_des(unsigned long buf, t_fl *fl);
 unsigned long		des3_algorythm(unsigned long buf, t_fl *fl);
 char				*from_digit(unsigned long res);
 void				make_subkey(t_fl *fl);
-
-
-void				print_b(unsigned long a);
 
 #endif

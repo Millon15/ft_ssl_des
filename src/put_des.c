@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/09 20:44:31 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/10 13:09:13 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ static	unsigned long	to_digit(unsigned char *s, ssize_t l, ssize_t passed)
 	return (res);
 }
 
-static	void			fix_num(char k[], t_fl *fl, int l)
+static	void			fix_num(char k[], int l)
 {
 	char	res[49];
 	int		len;
@@ -92,10 +92,10 @@ static	char			*pre_endecrypt_des(char *line, ssize_t *l, \
 static	int				help_put_des(char *r[], int k[], ssize_t l, t_fl *fl)
 {
 	if (ft_strlen(fl->k) != (fl->des3 ? 48 : 16))
-		fix_num(fl->k, fl, (fl->des3 ? 48 : 16));
+		fix_num(fl->k, (fl->des3 ? 48 : 16));
 	if (fl->cbc_mode && \
 	(fl->iv_buf)[0] && ft_strlen(fl->iv_buf) != 16)
-		fix_num(fl->iv_buf, fl, 16);
+		fix_num(fl->iv_buf, 16);
 	if (fl->cbc_mode)
 		fl->iv = ft_atou_base(fl->iv_buf, 16);
 	free(r[0]);
@@ -125,7 +125,8 @@ int						put_des(char **av, t_fl *fl, ssize_t ret, ssize_t l)
 
 	if ((k[0] = fl->in ? open(fl->in, O_RDONLY) : 0) == -1)
 		return (error(-1, av, fl->in, 0));
-	if ((k[1] = fl->out ? open(fl->out, O_WRONLY | O_CREAT | O_TRUNC, 0666) : 1) == -1)
+	if ((k[1] = fl->out ? open(fl->out, O_WRONLY | \
+	O_CREAT | O_TRUNC, 0666) : 1) == -1)
 		return (error(-1, av, fl->out, 0));
 	k[2] = (fl->bufs ? fl->bufs : BUFF_SIZE);
 	r[0] = (char *)malloc(sizeof(char) * (k[2] + 1));
