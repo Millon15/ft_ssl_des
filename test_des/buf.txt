@@ -1,0 +1,21 @@
+vibondr git:(master) echo "random text you want" | openssl base64 -e | ./ft_ssl base64 -d
+random text you want
+➜  vibondr git:(master) echo "random text you want" | ./ft_ssl base64 -e | ./ft_ssl base64 -d
+random text you want
+➜  vibondr git:(master) echo -n "\0" | ./ft_ssl base64 -e | ./ft_ssl base64 -d
+➜  vibondr git:(master) echo -n "1\01" | ./ft_ssl base64 -e | ./ft_ssl base64 -d
+➜  vibondr git:(master) echo -n "1\01" | openssl base64 -e | ./ft_ssl base64 -d
+1%                                                                                                                                                ➜  vibondr git:(master) echo -n "1\01" | ./ft_ssl base64 -e | ./ft_ssl base64 -d
+➜  vibondr git:(master) echo -n "1\01" | ./ft_ssl des -K FF00FF | ./ft_ssl base64 -d
+➜  vibondr git:(master) echo -n "1\01" | ./ft_ssl des -K FF00FF | ./ft_ssl des -d
+��ݔ
+   e%                                                                                                                                             ➜  vibondr git:(master) echo -n "1\01" | ./ft_ssl des -K FF00FF | ./ft_ssl des -K FF00FF -d
+   1%                                                                                                                                                ➜  vibondr git:(master) echo -n "km1\01" | ./ft_ssl base64 -e | ./ft_ssl base64 -d
+   km1%                                                                                                                                              ➜  vibondr git:(master) echo -n "km\01" | ./ft_ssl base64 -e | ./ft_ssl base64 -d
+   km%                                                                                                                                               ➜  vibondr git:(master) echo -n "k\01" | ./ft_ssl base64 -e | ./ft_ssl base64 -d
+   ➜  vibondr git:(master) echo -n "k\0112312312312" | ./ft_ssl base64 -e | ./ft_ssl base64 -d
+   kJ3123123%                                                                                                                                        ➜  vibondr git:(master) echo -n "k\0112312312312" | openssl base64 -e | ./ft_ssl base64 -d
+   kJ312312312%                                                                                                                                      ➜  vibondr git:(master) echo -n "k\0abdfg" | openssl base64 -e | ./ft_ssl base64 -d
+   kabdfg%                                                                                                                                           ➜  vibondr git:(master) echo -n "k\0abdfg" | openssl base64 -e | ./ft_ssl base64 -d | cat -e
+   k^@abdfg^@^@%                                                                                                                                     ➜  vibondr git:(master) echo -n "k\0abdfg" | ./ft_ssl base64 -e | ./ft_ssl base64 -d | cat -e
+   k^@^@^@^@^@%                                                                                                                                      ➜  vibondr git:(master)

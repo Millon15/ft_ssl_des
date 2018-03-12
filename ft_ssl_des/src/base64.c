@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:30:05 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/12 16:30:06 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/12 16:32:43 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,6 @@ char					*decrypt_base64(char *line, size_t ln, \
 	unsigned char	rem;
 	char			*fin;
 
-	// while (line[i])
-	// 	if (line[i++] == '\n')
-	// 		j++;
-	// ln = !((ln - j) % 4) ? ((i - j) / 4 * 3) : 0;
 	ln = ((ln - 2) / 4 * 3) + ((ln - 2) / 4 * 3) / 64;
 	fin = (char *)malloc(sizeof(char) * (ln + 1));
 	i = 0;

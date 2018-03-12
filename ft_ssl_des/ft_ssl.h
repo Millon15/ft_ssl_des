@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:47:17 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/12 16:35:23 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/12 15:47:14 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <sys/uio.h>
 # include <fcntl.h>
 # include "libft/libft.h"
+# include <stdio.h>
 
 typedef	struct		s_fl
 {
