@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:47:17 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/12 16:35:23 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/12 19:14:34 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,8 @@ typedef	struct		s_fl
 int					error(int ac, char **av, char *str, int i);
 int					read_command(int ac, char **av, t_fl *fl, int i);
 int					put_base64(char **av, t_fl *fl, ssize_t ret, ssize_t l);
-char				*encrypt_base64(char *line, size_t ln, size_t i, size_t j);
-char				*decrypt_base64(char *line, size_t ln, size_t i, size_t j);
+char				*encrypt_base64(char *line, ssize_t ln, size_t i, ssize_t j);
+char				*decrypt_base64(char *line, ssize_t ln, size_t i, ssize_t j);
 
 int					put_des(char **av, t_fl *fl, ssize_t ret, ssize_t l);
 unsigned long		endecrypt_des(unsigned long buf, t_fl *fl);

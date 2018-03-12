@@ -6,12 +6,14 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:30:05 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/12 16:30:06 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/12 19:24:41 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_ssl.h"
 #include "permutations.h"
+
+#include <stdio.h>
 
 static	unsigned char	find_num(char a)
 {
@@ -25,21 +27,15 @@ static	unsigned char	find_num(char a)
 	return (i);
 }
 
-char					*decrypt_base64(char *line, size_t ln, \
-						size_t i, size_t j)
+char					*decrypt_base64(char *line, ssize_t ln, \
+						size_t i, ssize_t j)
 {
 	unsigned char	res;
 	unsigned char	rem;
 	char			*fin;
 
-	// while (line[i])
-	// 	if (line[i++] == '\n')
-	// 		j++;
-	// ln = !((ln - j) % 4) ? ((i - j) / 4 * 3) : 0;
-	ln = ((ln - 2) / 4 * 3) + ((ln - 2) / 4 * 3) / 64;
+	ln = (ln / 4 * 3) - ((ln / 4 * 3) / 64);
 	fin = (char *)malloc(sizeof(char) * (ln + 1));
-	i = 0;
-	j = 0;
 	while (j < ln)
 	{
 		res = find_num(line[i++]);
@@ -56,8 +52,8 @@ char					*decrypt_base64(char *line, size_t ln, \
 	return (fin);
 }
 
-char					*encrypt_base64(char *line, size_t ln, size_t i, \
-						size_t j)
+char					*encrypt_base64(char *line, ssize_t ln, size_t i, \
+						ssize_t j)
 {
 	unsigned char	re[2];
 	char			*fin;
@@ -74,10 +70,10 @@ char					*encrypt_base64(char *line, size_t ln, size_t i, \
 		fin[i++] = g_st[((re[1] | re[0]) >> 2)];
 		re[0] = (unsigned char)line[j++] << 4;
 		re[1] = (j < ln) ? (((unsigned char)line[j] >> 6) << 2) : 0;
-		fin[i++] = (re[1] || re[0] || (j < (ln - 2))) ? \
+		fin[i++] = (re[1] || re[0] || (j < (ln - 1))) ? \
 		(g_st[((re[1] | re[0]) >> 2)]) : '=';
 		re[0] = (j < ln) ? ((unsigned char)line[j++] << 2) : 0;
-		fin[i++] = (re[1] || re[0] || (j < (ln - 2))) ? \
+		fin[i++] = (re[1] || re[0] || (j < (ln - 1))) ? \
 		(g_st[(re[0] >> 2)]) : '=';
 		if (!((i - tmp[0]) % 64) && ++tmp[0])
 			fin[i++] = '\n';
@@ -114,11 +110,10 @@ int						put_base64(char **av, t_fl *fl, ssize_t ret, ssize_t l)
 		free(r[2]);
 		l += ret;
 	}
-	l += 2;
-	r[2] = (!fl->decrypt ? encrypt_base64(r[1], l, 0, 0) : \
-	decrypt_base64(r[1], l, 0, 0));
-	l = fl->decrypt ? (l / 4 * 3 + (l / 4 * 3) / 64) : \
-	(l / 3 * 4 + (l / 3 * 4) / 64);
+	r[2] = (fl->decrypt ? decrypt_base64(r[1], l, 0, 0) : \
+	encrypt_base64(r[1], l + 2, 0, 0));
+	l = fl->decrypt ? (l / 4 * 3 - (l / 4 * 3) / 64) : \
+	((l + 2) / 3 * 4 + ((l + 2) / 3 * 4) / 64);
 	fl->decrypt ? ft_putnstr_fd(r[2], k[1], l) : ft_putnendl_fd(r[2], k[1], l);
 	return (help_put_base64(r));
 }
