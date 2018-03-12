@@ -6,14 +6,12 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:30:05 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/12 19:24:41 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/12 19:28:28 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_ssl.h"
 #include "permutations.h"
-
-#include <stdio.h>
 
 static	unsigned char	find_num(char a)
 {

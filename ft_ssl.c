@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/19 00:39:08 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/09 20:19:56 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/12 19:34:38 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ static	void	stdin_reading(int ac, char **av, t_fl *fl)
 		write(1, "ft_SSL> ", 8);
 		fill_zeros(fl);
 		av = read_from_stdin(&ac);
+		if (!(*av))
+			continue ;
 		if ((read_command(ac, av, fl, 0)) != -1)
 			return ;
 	}
