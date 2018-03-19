@@ -1,0 +1,14 @@
+If the file is not empty, HAHAHHA LOH
+The plaintext is the text provided below
+and both of its opening and closing '"' should be excluded
+
+ ===================== 
+>>> TEXT "8rpTSS6N{G.v+*<s{YaEBZ#HKSAQwY*Jmym)r'TqJ1[=_=({		nO`tQ1`^m2:e=IO\6En<|Jm2JG~n.F&kWE:AE#6s;U,	>KG3u6qmpouW80hE5~=5r|a KZ5,^y\2u`PX	HW>CZLLJj766tH'`
+n[F'>#dnP?\Q]'{^C 3`-2JB"
+>>> KEY = 42ec
+>>> IV  = a2
+>>> FAILED:
+	base64 decryption
+	des-ecb base64 decryption
+	des-cbc base64 decryption
+

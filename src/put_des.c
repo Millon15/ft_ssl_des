@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/21 19:16:04 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/10 13:09:13 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/18 21:22:52 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,8 +91,6 @@ static	char			*pre_endecrypt_des(char *line, ssize_t *l, \
 
 static	int				help_put_des(char *r[], int k[], ssize_t l, t_fl *fl)
 {
-	if (ft_strlen(fl->k) != (fl->des3 ? 48 : 16))
-		fix_num(fl->k, (fl->des3 ? 48 : 16));
 	if (fl->cbc_mode && \
 	(fl->iv_buf)[0] && ft_strlen(fl->iv_buf) != 16)
 		fix_num(fl->iv_buf, 16);
@@ -111,7 +109,8 @@ static	int				help_put_des(char *r[], int k[], ssize_t l, t_fl *fl)
 		ft_putnendl_fd((r[1] = (encrypt_base64(r[2], \
 		l, 0, 0))), k[1], ft_strlen(r[1]));
 	else
-		write(k[1], r[2], l);
+		write(k[1], r[2], l - \
+		((r[2][l - 1] >= 1 && r[2][l - 1] <= 8) ? r[2][l - 1] : 0));
 	if ((!(fl->decrypt) && fl->a))
 		free(r[1]);
 	free(r[2]);
@@ -139,5 +138,7 @@ int						put_des(char **av, t_fl *fl, ssize_t ret, ssize_t l)
 		free(r[2]);
 		l += ret;
 	}
+	if (ft_strlen(fl->k) != (fl->des3 ? 48 : 16))
+		fix_num(fl->k, (fl->des3 ? 48 : 16));
 	return (help_put_des(r, k, l, fl));
 }

@@ -6,14 +6,14 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:30:05 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/12 19:28:28 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/18 23:11:43 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ft_ssl.h"
 #include "permutations.h"
 
-static	unsigned char	find_num(char a)
+static	unsigned char	find_num(unsigned char a)
 {
 	unsigned char	i;
 
@@ -36,15 +36,17 @@ char					*decrypt_base64(char *line, ssize_t ln, \
 	fin = (char *)malloc(sizeof(char) * (ln + 1));
 	while (j < ln)
 	{
+		i = line[i] == '\n' ? (i + 1) : i;
 		res = find_num(line[i++]);
+		i = line[i] == '\n' ? (i + 1) : i;
 		rem = find_num(line[i++]);
 		fin[j++] = (res << 2) | (rem >> 4);
+		i = line[i] == '\n' ? (i + 1) : i;
 		res = find_num(line[i++]);
 		fin[j++] = (rem << 4) | (res >> 2);
+		i = line[i] == '\n' ? (i + 1) : i;
 		rem = find_num(line[i++]);
 		fin[j++] = (res << 6) | rem;
-		if (!(i % 64))
-			i++;
 	}
 	fin[j] = '\0';
 	return (fin);

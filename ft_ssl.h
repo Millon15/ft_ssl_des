@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/01/18 18:47:17 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/12 19:35:48 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/18 23:11:28 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,8 @@ typedef	struct		s_fl
 	unsigned int	des3_ecb : 1;
 	unsigned int	des3_cbc : 1;
 	unsigned int	cbc_mode : 1;
-	unsigned int	bufs : 1;
 	unsigned int	a : 1;
+	int				bufs;
 	unsigned long	iv;
 	char			*in;
 	char			*out;

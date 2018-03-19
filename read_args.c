@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:03:55 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/12 19:31:06 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/18 18:54:55 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,10 +61,10 @@ static	int		help_read_args(char **av, t_fl *fl, int i)
 		return ((fl->encrypt = 1));
 	else if (!(ft_strcmp(av[i], "-d")))
 		return ((fl->decrypt = 1));
-	else if (!(ft_strcmp(av[i], "-bufsize")))
-		fl->bufs = ft_atoi(av[++i]);
 	else if (!(ft_strcmp(av[i], "-a")) || !(ft_strcmp(av[i], "-base64")))
 		return ((fl->a = 1));
+	else if (!(ft_strcmp(av[i], "-bufsize")))
+		fl->bufs = ft_atoi(av[++i]);
 	return (-1);
 }
 
@@ -75,12 +75,13 @@ static	int		read_args(int ac, char **av, t_fl *fl, int i)
 	i_buf = i;
 	while (av[++i])
 	{
-		if ((!(ft_strcmp(av[i], "-in")) || !(ft_strcmp(av[i], "-i")) ||\
-		!(ft_strcmp(av[i], "-out")) || !(ft_strcmp(av[i], "-o")) ||\
-		!(ft_strcmp(av[i], "-k")) || !(ft_strcmp(av[i], "-K")) ||\
-		!(ft_strcmp(av[i], "-iv")) || !(ft_strcmp(av[i], "-v")) ||\
+		if ((!(ft_strcmp(av[i], "-k")) || !(ft_strcmp(av[i], "-K")) || \
+		!(ft_strcmp(av[i], "-iv")) || !(ft_strcmp(av[i], "-v")) || \
 		!(ft_strcmp(av[i], "-bufsize"))) && \
-		(av[i + 1][0] == '-' || !(av[i + 1])))
+		(!av[i + 1] || !ft_isalnum(av[i + 1][0])))
+			return ((error(ac, av, (char *)1, i)));
+		else if ((!(ft_strcmp(av[i], "-in")) || !(ft_strcmp(av[i], "-i")) || \
+		!(ft_strcmp(av[i], "-out")) || !(ft_strcmp(av[i], "-o"))) && !av[i + 1])
 			return ((error(ac, av, (char *)1, i)));
 		else if (!(ft_strcmp(av[i], "-in")) || !(ft_strcmp(av[i], "-i")))
 			fl->in = av[++i];
@@ -104,9 +105,10 @@ int				read_command(int ac, char **av, t_fl *fl, int i)
 		fl->des_ecb = 1;
 	else if (!(ft_strcmp(av[i], "des-cbc")))
 		fl->des_cbc = 1;
-	else if (!(ft_strcmp(av[i], "des3")) || !(ft_strcmp(av[i], "des-ede3-cbc")))
+	else if (!(ft_strcmp(av[i], "des3")) || \
+	!(ft_strcmp(av[i], "des-ede3-cbc")) || !(ft_strcmp(av[i], "des3-cbc")))
 		fl->des3_cbc = 1;
-	else if (!(ft_strcmp(av[i], "des-ede3")))
+	else if (!(ft_strcmp(av[i], "des-ede3")) || !(ft_strcmp(av[i], "des3-ecb")))
 		fl->des3_ecb = 1;
 	else
 		return ((error(2, av, NULL, i)));
