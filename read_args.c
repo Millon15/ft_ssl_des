@@ -6,7 +6,7 @@
 /*   By: vbrazas <vbrazas@student.unit.ua>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/01 16:03:55 by vbrazas           #+#    #+#             */
-/*   Updated: 2018/03/18 18:54:55 by vbrazas          ###   ########.fr       */
+/*   Updated: 2018/03/20 17:34:05 by vbrazas          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static	int		check_args(char **av, t_fl *fl)
 	char		buf[17];
 	ssize_t		ret;
 
-	if (!((fl->k)[0]) && fl->cbc_mode)
+	if (!((fl->k)[0]) && !fl->base64)
 	{
 		ft_putstr("enter des encryption key: ");
 		ret = read(0, fl->k, (fl->des3 ? 49 : 17));
