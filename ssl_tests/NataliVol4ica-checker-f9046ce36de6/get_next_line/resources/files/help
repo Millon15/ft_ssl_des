@@ -1,0 +1,9 @@
+Welcome to the BIFC Checker!
+Here is the list of available commands:
+
+test_basic:
+test_middle:
+test_advanced:
+test_error:
+test_bonus:
+test_all

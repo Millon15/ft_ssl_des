@@ -1,0 +1,68 @@
+
+Put your libftprintf.a to the checker/ft_printf.
+
+Tests are written in ./tests
+Test fail log is put to the ./fails.
+.c test files can be found at ./resources/generated_testers
+
+Run make to compile and run everything
+Run make test to run the testing without extra compilation (if no tests changes were made). Remember to previously run make at least once
+
+============|| TEST FILE FORMAT ||============
+
+# means the beginning of a comment
+Main and bonus test lines cannot be removed or edited, neither the order can be changed
+There may be no tests in section
+Tests can be separated by any number of empty lines
+The number of single test fields must be exactly 9
+The difference between main and bonus tests is only in the result printing format. You may put bonus tests to the main section, however you may run into the situation when your bonus field values won't be displayed in the result table.
+
+If you fail in tests input format, this will ruin the whole testing. Also,
+If you fail in tests input values, this will ruin the tests compilation.
+
+===| Tests format: |===
+
+Every field, if empty, can be marked as "-" or "". In no way it can be skipped.
+
+00: n$
+	Optional. Also can be used to write full argument up to the next %, included.
+	Examples: "2$", "1$02.3d   %".
+	Remember to include the used argument to arguments field.
+
+01: flags
+	Optional. Six default flags are ` `, `0`, `+`, `-`, `#`, `'`. Can be written in any order and number, one after another. `#` should be written as "\#"
+	Example: " 0+-\#'"
+
+02: width
+	Optional. Can be written as number and *number$. $ should be written as $$.
+	Remember to include the used argument to arguments field.
+
+03: precision
+	Optional. If used, must always starts with . Can be written as .number, .*number$. $ should be written as $$.
+	Remember to include the used argument to arguments field.
+
+04: lengthes
+	Optional. If the number of lengthes is more than 1, they must be separated by |. If you want to include missing length, you must mark it as "-|other_flags", otherwise it will be ignored. Example: "-|hh|ll"
+
+05: types
+	Must contain at least one type. Example: "diouxX"
+
+06: arguments
+	Optional. The arguments that are going after the fmt string. Should be separated by , if more than one is used. Example: "1, 'c', n"
+
+07: code piece
+	Optional. This is where you can print some code. For example, set the locale or create a variable. The code will be added to the beginning of the testing. If you need some extra headers, include them to resources/tools/test_headers.h Do not use \n. Example: "int n = 1; void *p = (void*)&n;"
+
+08: extra printing.
+	Optional. This was implemented for testing the %n type. This is what will be printed among with the casual test, after it. Example: "%n".
+
+The more field values are used in same test, the longer it will take to compile it.
+In no way should test execution last longer than compilation. Neither it should segfault, etc.
+
+-----
+
+"none" in the result table means that there are no tests for this input or the behaviour of such input execution is undefined.
+
+You can set UNDEF at 1 in testmaker.c in order to not avoid undefined behaviour tests. By default, such cases are skipped even if they are included to the test.
+
+If original printf function returns -1 then comparation result does not count.
